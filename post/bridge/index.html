@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Java桥接模式(bridge) | suisuipingan</title>
+<meta name="description" content="温故而知新">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="http://blogs.liusuisui.cn/favicon.ico?v=1561529475637">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="http://blogs.liusuisui.cn/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="http://blogs.liusuisui.cn">
+        <img src="http://blogs.liusuisui.cn/images/avatar.png?v=1561529475637" class="site-logo">
+        <h1 class="site-title">suisuipingan</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives/" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags/" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="http://blogs.liusuisui.cn/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Java桥接模式(bridge)</h2>
+            <div class="post-date">2019-06-26</div>
+            
+            <div class="post-content">
+              <p><a name="Iz1nV"></a></p>
+<h1 id="桥接模式">桥接模式</h1>
+<p><a name="lgPtP"></a></p>
+<h2 id="1多层继承结构">1.多层继承结构</h2>
+<blockquote>
+<p>在现实生活中比如商城中以电脑为例来说，如何处理电脑销售分类的问题，我们可以使用<strong>多层继承结构</strong>实现这种场景</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1560929833605-965b70b1-b2eb-465d-b12d-c90861f372b3.png#align=left&amp;display=inline&amp;height=470&amp;originHeight=470&amp;originWidth=472&amp;size=0&amp;status=done&amp;width=472" alt=""><br />问题
+<a name="W2dVw"></a></p>
+<h3 id="11扩展性问题">1.1扩展性问题</h3>
+<ol>
+<li>如果要增加一个新的扩展类型：智能手机，则要在每个品牌下增加一个新类</li>
+<li>如果要新增加一个品牌，则这个品牌下要增加各个类型的电脑
+<a name="QO2Oo"></a></li>
+</ol>
+<h3 id="12违反单一职责原则">1.2违反单一职责原则</h3>
+<p>一个类有两个引起该类变化的因素。</p>
+<p><a name="FccHP"></a></p>
+<h2 id="2桥接模式实现">2.桥接模式实现</h2>
+<p><a name="MkG62"></a></p>
+<h3 id="21场景分析">2.1场景分析</h3>
+<ol>
+<li>商城系统中常见的商品分类，以电脑为类，如何良好的处理商品分类销售的问题?</li>
+<li>这个场景中有两个变化的维度：电脑类型、电脑品牌 这个场景中有两个变化的维度：电脑类型、电脑品牌</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1560929943900-a695abdd-dd9e-4137-8723-adefbda420d3.png#align=left&amp;display=inline&amp;height=551&amp;originHeight=551&amp;originWidth=1007&amp;size=0&amp;status=done&amp;width=1007" alt="">
+<a name="Qugoz"></a></p>
+<h3 id="22桥接模式核心要点">2.2桥接模式核心要点：</h3>
+<p>处理多层继承结构，处理多维度变化的场景，将各个维度设计成独立的继承结构，使各个维度可以独立的扩展在抽象层建立关联。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1560929968361-75d96178-419d-402f-aa89-4c15b237e7ba.png#align=left&amp;display=inline&amp;height=633&amp;originHeight=633&amp;originWidth=1118&amp;size=0&amp;status=done&amp;width=1118" alt="">
+<a name="zAWAf"></a></p>
+<h2 id="3代码实现">3.代码实现</h2>
+<p>品牌类</p>
+<pre><code class="language-java">/**
+ * 品牌
+ * @author Administrator
+ *
+ */
+public interface Brand {
+	void sale();
+}
+
+class Lenovo implements Brand {
+
+	@Override
+	public void sale() {
+		System.out.println(&quot;销售联想电脑&quot;);
+	}
+	
+}
+
+class Dell implements Brand {
+	
+	@Override
+	public void sale() {
+		System.out.println(&quot;销售Dell电脑&quot;);
+	}
+	
+}
+
+class Shenzhou implements Brand {
+	
+	@Override
+	public void sale() {
+		System.out.println(&quot;销售神舟电脑&quot;);
+	}
+	
+}
+
+</code></pre>
+<p>电脑维度，也就是桥接类</p>
+<pre><code class="language-java">/**
+ * 电脑类型的维度
+ * @author Administrator
+ *
+ */
+public class Computer2 {
+	
+	protected Brand brand;
+	
+	public Computer2(Brand b) {
+		this.brand = b;
+	}
+	
+	public void sale(){
+		brand.sale();
+	}
+	
+}
+
+class Desktop2 extends Computer2 {
+
+	public Desktop2(Brand b) {
+		super(b);
+	}
+	
+	@Override
+	public void sale() {
+		super.sale();
+		System.out.println(&quot;销售台式机&quot;);
+	}
+}
+
+class Laptop2 extends Computer2 {
+	
+	public Laptop2(Brand b) {
+		super(b);
+	}
+	
+	@Override
+	public void sale() {
+		super.sale();
+		System.out.println(&quot;销售笔记本&quot;);
+	}
+}
+
+
+</code></pre>
+<p>测试类</p>
+<pre><code class="language-java">public class Client {
+	public static void main(String[] args) {
+		//销售联想的笔记本电脑
+		Computer2  c = new Laptop2(new Lenovo());
+		c.sale();
+		//销售神舟的台式机
+		Computer2 c2 = new Desktop2(new Shenzhou());
+		c2.sale();
+	}
+}
+
+</code></pre>
+<p><a name="lmt9T"></a></p>
+<h2 id="4桥接模式总结">4.桥接模式总结</h2>
+<ol>
+<li>桥接模式可以取代多层继承的方案。 多层继承违背了单一职责原则，复用性较差，类的个数也非常多。桥接模式可以极大的减少子类的个数，从而降低管理和维护的成本。</li>
+<li>桥接模式极大的提高了系统可扩展性，在两个变化维度中任意扩展一个维度，都不需要修改原有的系统，符合开闭原则。</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1560930087539-e2ffc059-8fb2-4524-9aea-dc5ee91ed5c7.png#align=left&amp;display=inline&amp;height=516&amp;originHeight=516&amp;originWidth=1303&amp;size=0&amp;status=done&amp;width=1303" alt=""></p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="http://blogs.liusuisui.cn/tag/java" class="tag">
+                    java
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="http://blogs.liusuisui.cn/post/chajian">
+                  <h3 class="post-title">
+                    Java通过URLClassLoader让程序支持插件扩展
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: 'b31c841058e3c035d9b2',
+        clientSecret: 'f35c94c3fd65770a0f644299d4f3eedcb22ec5a1',
+        repo: 'liujinhua306.github.io',
+        owner: 'liujinhua306',
+        admin: ['liujinhua306'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
