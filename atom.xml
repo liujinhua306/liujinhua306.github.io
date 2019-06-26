@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://liujinhua306.github.io</id>
     <title>Gridea</title>
-    <updated>2019-06-26T02:14:10.084Z</updated>
+    <updated>2019-06-26T02:14:46.990Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://liujinhua306.github.io"/>
     <link rel="self" href="https://liujinhua306.github.io/atom.xml"/>
@@ -10,110 +10,4 @@
     <logo>https://liujinhua306.github.io/images/avatar.png</logo>
     <icon>https://liujinhua306.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Gridea</rights>
-    <entry>
-        <title type="html"><![CDATA[redis批量删除key]]></title>
-        <id>https://liujinhua306.github.io/post/redis</id>
-        <link href="https://liujinhua306.github.io/post/redis">
-        </link>
-        <updated>2019-06-26T02:07:46.000Z</updated>
-        <content type="html"><![CDATA[<p>reidis批量删除指定key   123456是redis密码  “RISK_*”表示匹配以RISK_开头的keys</p>
-<p>./redis-cli -a 123456 keys &quot;RISK_*&quot; | xargs ./redis-cli -a 123456 del</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[postgresql文档]]></title>
-        <id>https://liujinhua306.github.io/post/postgresql</id>
-        <link href="https://liujinhua306.github.io/post/postgresql">
-        </link>
-        <updated>2019-06-26T02:03:56.000Z</updated>
-        <content type="html"><![CDATA[<p>​
-1
-DO
-2
-<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>d</mi><mi>o</mi></mrow><annotation encoding="application/x-tex">do</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">d</span><span class="mord mathdefault">o</span></span></span></span>
-3
-BEGIN
-4
-IF EXISTS (SELECT 1 FROM orders) THEN
-5
-DELETE FROM orders;
-6
-ELSE
-7
-INSERT INTO orders VALUES (1,2,3);
-8
-END IF;
-9
-END
-10
-<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>d</mi><mi>o</mi></mrow><annotation encoding="application/x-tex">do</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">d</span><span class="mord mathdefault">o</span></span></span></span>
-​</p>
-<p>​
-1
--- 查询t_sys_menu表的id并赋值给menu变量（menu变量是RECORD类型的） 然后for循环 查询t_sys_role_resource表
-2
--- 中是否有该menuid的记录。没有就插入。
-3
-DO <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>b</mi><mi>o</mi><mi>d</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">body</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">b</span><span class="mord mathdefault">o</span><span class="mord mathdefault">d</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span></span></span></span> DECLARE
-4
-menu RECORD;
-5
-BEGIN
-6
-FOR menu IN ( SELECT recordid FROM t_sys_menu )
-7
-LOOP
-8
-IF
-9
-( SELECT COUNT ( 1 ) FROM t_sys_role_resource WHERE roleid = '1' AND menuid = menu.recordid ) = 0 --一定要加括号
-10
-THEN
-11
-INSERT INTO &quot;public&quot;.&quot;t_sys_role_resource&quot; ( &quot;recordid&quot;, &quot;roleid&quot;, &quot;menuid&quot;, &quot;buttons&quot; )
-12
-VALUES
-13
-( menu.recordid, '1', menu.recordid, NULL );
-14
-ELSE
-15
---nothing to do;
-16</p>
-<p>17
-END IF;
-18</p>
-<p>19
-END LOOP;
-20
-​
-21
-END;
-22
-<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>b</mi><mi>o</mi><mi>d</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">body</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">b</span><span class="mord mathdefault">o</span><span class="mord mathdefault">d</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span></span></span></span> LANGUAGE PLPGSQL;
-23
-​
-​</p>
-<p>​
-1
--- 查询出menuid后再赋值给menu_id
-2
-DO <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>b</mi><mi>o</mi><mi>d</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">body</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">b</span><span class="mord mathdefault">o</span><span class="mord mathdefault">d</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span></span></span></span> DECLARE
-3
-menu_id VARCHAR ( 1000 );
-4
-BEGIN
-5
-menu_id=(select menuid from t_sys_role_resource where recordid='800005003' );
-6
-update t_sys_menu set flag=0 where recordid=menu_id;
-7
-END;
-8
-<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>b</mi><mi>o</mi><mi>d</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">body</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">b</span><span class="mord mathdefault">o</span><span class="mord mathdefault">d</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span></span></span></span> LANGUAGE PLPGSQL;
-9
-​
-​</p>
-]]></content>
-    </entry>
 </feed>
