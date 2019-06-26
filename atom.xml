@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://liujinhua306.github.io</id>
     <title>suisuipingan</title>
-    <updated>2019-06-26T03:17:21.313Z</updated>
+    <updated>2019-06-26T03:22:55.237Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://liujinhua306.github.io"/>
     <link rel="self" href="https://liujinhua306.github.io/atom.xml"/>
@@ -10,6 +10,73 @@
     <logo>https://liujinhua306.github.io/images/avatar.png</logo>
     <icon>https://liujinhua306.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, suisuipingan</rights>
+    <entry>
+        <title type="html"><![CDATA[嵌套练习]]></title>
+        <id>https://liujinhua306.github.io/post/qian-tao-lian-xi</id>
+        <link href="https://liujinhua306.github.io/post/qian-tao-lian-xi">
+        </link>
+        <updated>2019-06-26T03:22:22.000Z</updated>
+        <content type="html"><![CDATA[<p><img src="https://img.shields.io/badge/auth-liujinhua-blue.svg#align=left&amp;display=inline&amp;height=20&amp;originHeight=20&amp;originWidth=92&amp;status=done&amp;width=92" alt="">  <img src="https://img.shields.io/badge/postgresl-9.6-red.svg#align=left&amp;display=inline&amp;height=20&amp;originHeight=20&amp;originWidth=88&amp;status=done&amp;width=88" alt=""></p>
+<pre><code class="language-sql">-- 表结构
+-- 
+-- 学生表student(id,name)
+-- 列表项目
+-- 课程表course(id,name)
+-- 学生课程表student_course(sid,cid,score)
+-- sql
+create table student(
+id int unsigned primary key auto_increment,
+name char(10) not null
+);
+insert into student(name) values('张三'),('李四');
+
+create table course(
+id int unsigned primary key auto_increment,
+name char(20) not null
+);
+insert into course(name) values('语文'),('数学');
+
+create table student_course(
+sid int unsigned,
+cid int unsigned,
+score int unsigned not null,
+foreign key (sid) references student(id),
+foreign key (cid) references course(id),
+primary key(sid, cid)
+);
+
+insert into student_course values(1,1,80),(1,2,90),(2,1,90),(2,2,70);
+
+--在student_course表中查询每门课成绩都不低于80的学生id
+select distinct sid
+from student_course
+where sid not in (select sid from student_course where score &lt; 80);
+
+-- 查询每个学生的总成绩，结果列出学生姓名和总成绩
+select name,sum(score)
+from student left join student_course
+on student.id=student_course.sid
+group by sid;
+
+
+-- 在student_course表查询各科成绩最高的学生，结果列出学生id、课程id和对应的成绩
+select * from student_course as x 
+where score&gt;=(
+ select max(score) from student_course as y 
+ where cid=x.cid
+ );
+ 
+ --在student_course表中查询每门课的前2名，结果按课程id升序，同一课程按成绩降序 这个问题也就是取每组的前N条纪录
+  select * from student_course x 
+ where 2&gt;(
+ select count(*) from student_course y 
+ where y.cid=x.cid and y.score&gt;x.score
+ ) 
+order by cid,score desc;
+--这也是一个相关嵌套查询，对于每一个分数，如果同一门课程下只有0个、1个分数比这个分数还高，那么这个分数肯定是前2名之一
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[exists练习]]></title>
         <id>https://liujinhua306.github.io/post/exists-lian-xi</id>
