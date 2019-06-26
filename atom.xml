@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://liujinhua306.github.io</id>
     <title>suisuipingan</title>
-    <updated>2019-06-26T03:22:55.237Z</updated>
+    <updated>2019-06-26T03:34:02.304Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://liujinhua306.github.io"/>
     <link rel="self" href="https://liujinhua306.github.io/atom.xml"/>
@@ -10,6 +10,330 @@
     <logo>https://liujinhua306.github.io/images/avatar.png</logo>
     <icon>https://liujinhua306.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, suisuipingan</rights>
+    <entry>
+        <title type="html"><![CDATA[Java通过URLClassLoader让程序支持插件扩展]]></title>
+        <id>https://liujinhua306.github.io/post/chajian</id>
+        <link href="https://liujinhua306.github.io/post/chajian">
+        </link>
+        <updated>2019-06-26T03:33:25.000Z</updated>
+        <content type="html"><![CDATA[<p>插件(Plugin)是什么不用多说。常用的软件，例如Eclipse、Photoshop、VisualStudio，都支持插件扩展。插件可以动态给软件添加一些功能，也可以随时删除，这样的好处是任何人都可以给这个软件进行功能上的扩展，而不用去改软件本身的代码。
+<a name="IucKb"></a></p>
+<h2 id=""><a href="http://xxgblog.com/2013/07/04/java-urlclassloader-plugin/#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"></a>适用场景</h2>
+<p>比如需要开发一个系统，用来将一些有数据推送给客户，至于是什么数据不是重点。有三个客户：A客户需要把数据组织成一个xml格式的文件，通过FTP上传到客户服务器上；B客户需要把数据组织成一个json，通过HTTP请求提交；C客户希望生成一个Excel文件再通过E-mail发送…以后可能还会有更多的客户，也还会有更多操蛋的需求。<br />对于这样一个系统的开发，如果使用普通的方式开发，那么每增加一个客户就要修改一次系统代码，在代码中增加一个针对某个客户的功能，很不灵活。如果再减少一个客户，那么其对应的代码也就没有用了，是不是要删除掉又成了问题。<br />以上只是一个例子，在实际开发中经常会有类似的情形，此时使用插件化的方式会更灵活。<br />遇到这种情况，可以把数据的获取和整理这块和客户无关的逻辑放在主程序中，而主程序提供一个客户推送的接口，接口定义一个未实现的抽象方法“推送数据”，这个方法由各个客户对应的插件来实现。这样新增一个客户需求，不需要修改主程序的代码，只需要实现这个接口就行，插件写好打成jar包放在指定目录下，再配置一下，主程序就可以使用这个插件了。当不需要这个插件，也可以通过配置来去掉它。
+<a name="47bFo"></a></p>
+<h2 id="-2"><a href="http://xxgblog.com/2013/07/04/java-urlclassloader-plugin/#%E4%B8%BB%E7%A8%8B%E5%BA%8F%E9%85%8D%E7%BD%AE%E6%8F%92%E4%BB%B6"></a>主程序配置插件</h2>
+<p>上面说到主程序可以通过配置来动态添加和删除插件，配置的方式一般有两种：XML或数据库，二者选其一即可。
+<a name="nxtNT"></a></p>
+<h3 id="-3"><a href="http://xxgblog.com/2013/07/04/java-urlclassloader-plugin/#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9AXML"></a>方法一：XML</h3>
+<p>主程序可以通过一个xml配置文件，动态配置插件。</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;plugins&gt;
+	&lt;plugin&gt;
+		&lt;name&gt;A客户插件&lt;/name&gt;
+		&lt;jar&gt;D:/plugin/a-plugin.jar&lt;/jar&gt;
+		&lt;class&gt;com.xxg.aplugin.APlugin&lt;/class&gt;
+	&lt;/plugin&gt;
+	&lt;plugin&gt;
+		&lt;name&gt;B客户插件&lt;/name&gt;
+		&lt;jar&gt;D:/plugin/b-plugin.jar&lt;/jar&gt;
+		&lt;class&gt;com.xxg.bplugin.BPlugin&lt;/class&gt;
+	&lt;/plugin&gt;
+	&lt;plugin&gt;
+		&lt;name&gt;C客户插件&lt;/name&gt;
+		&lt;jar&gt;D:/plugin/c-plugin.jar&lt;/jar&gt;
+		&lt;class&gt;com.xxg.cplugin.CPlugin&lt;/class&gt;
+	&lt;/plugin&gt;
+&lt;/plugins&gt;
+</code></pre>
+<p>主程序通过解析这个XML来调用插件，<plugin>元素即一个插件，可以通过添加和删除<plugin>元素来动态的添加和删除插件。<name>是插件名称，<jar>是插件jar文件所在的路径，<class>是插件实现主程序接口的类。
+<a name="qWqs4"></a></p>
+<h3 id="-4"><a href="http://xxgblog.com/2013/07/04/java-urlclassloader-plugin/#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%BA%93"></a>方法二：数据库</h3>
+<p>如果使用数据库来配置插件，需要一个插件表（plugin_info）：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">id</th>
+<th style="text-align:left">name</th>
+<th style="text-align:left">jar</th>
+<th style="text-align:left">class</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1</td>
+<td style="text-align:left">A客户插件</td>
+<td style="text-align:left">D:/plugin/a-plugin.jar</td>
+<td style="text-align:left">com.xxg.aplugin.APlugin</td>
+</tr>
+<tr>
+<td style="text-align:left">2</td>
+<td style="text-align:left">B客户插件</td>
+<td style="text-align:left">D:/plugin/b-plugin.jar</td>
+<td style="text-align:left">com.xxg.bplugin.BPlugin</td>
+</tr>
+<tr>
+<td style="text-align:left">3</td>
+<td style="text-align:left">C客户插件</td>
+<td style="text-align:left">D:/plugin/c-plugin.jar</td>
+<td style="text-align:left">com.xxg.cplugin.CPlugin</td>
+</tr>
+</tbody>
+</table>
+<p><a name="dVHbg"></a></p>
+<h3 id="-5"><a href="http://xxgblog.com/2013/07/04/java-urlclassloader-plugin/#%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB"></a>两种方法的区别</h3>
+<p>两种方式从功能上来说是一样的。使用数据库方式的好处是可以很方遍的再开发一个管理界面来管理，不好的地方就是依赖数据库。
+<a name="Yg8Li"></a></p>
+<h2 id="-6"><a href="http://xxgblog.com/2013/07/04/java-urlclassloader-plugin/#%E4%B8%BB%E7%A8%8B%E5%BA%8F"></a>主程序</h2>
+<p>下面是以XML作为插件配置方式的调用插件的主程序。<br />主程序需要提供一个接口来提供给插件开发者来实现：</p>
+<pre><code class="language-java">package com.xxg.main;
+
+public interface PluginService {
+	public void service();
+}
+</code></pre>
+<p>上面是一个接口，包含一个未实现的方法service()，这个方法即和客户相关的逻辑，由插件来实现。<br />插件封装类：</p>
+<pre><code class="language-java">package com.xxg.main;
+
+public class Plugin {
+	private String name;
+	
+	private String jar;
+	
+	private String className;
+	
+	// setter、getter省略…
+}
+</code></pre>
+<p>解析XML获取所有插件信息（这里用到dom4j）：</p>
+<pre><code class="language-java">package com.xxg.main;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
+
+public class XMLParser {
+	public static List&lt;Plugin&gt; getPluginList() throws DocumentException {
+		List&lt;Plugin&gt; list = new ArrayList&lt;Plugin&gt;();
+		
+		SAXReader saxReader =new SAXReader();
+		Document document = saxReader.read(new File(&quot;plugin.xml&quot;));
+		Element root = document.getRootElement();
+		List&lt;?&gt; plugins = root.elements(&quot;plugin&quot;);
+		for(Object pluginObj : plugins) {
+			Element pluginEle = (Element)pluginObj;
+			Plugin plugin = new Plugin();
+			plugin.setName(pluginEle.elementText(&quot;name&quot;));
+			plugin.setJar(pluginEle.elementText(&quot;jar&quot;));
+			plugin.setClassName(pluginEle.elementText(&quot;class&quot;));
+			list.add(plugin);
+		}
+		return list;
+	}
+}
+</code></pre>
+<p>使用URLClassLoader动态加载jar文件，实例化插件中的对象：</p>
+<pre><code class="language-java">package com.xxg.main;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.List;
+
+public class PluginManager {
+	private URLClassLoader urlClassLoader;
+
+	public PluginManager(List&lt;Plugin&gt; plugins) throws MalformedURLException {
+		init(plugins);
+	}
+	
+	private void init(List&lt;Plugin&gt; plugins) throws MalformedURLException {
+		int size = plugins.size();
+		URL[] urls = new URL[size];
+		
+		for(int i = 0; i &lt; size; i++) {
+			Plugin plugin = plugins.get(i);
+			String filePath = plugin.getJar();
+
+			urls[i] = new URL(&quot;file:&quot; + filePath);
+		}
+		
+		// 将jar文件组成数组，来创建一个URLClassLoader
+		urlClassLoader = new URLClassLoader(urls);
+	}
+	
+	public PluginService getInstance(String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+		// 插件实例化对象，插件都是实现PluginService接口
+		Class&lt;?&gt; clazz = urlClassLoader.loadClass(className);
+		Object instance = clazz.newInstance();
+
+		return (PluginService)instance;
+	}
+}
+</code></pre>
+<p>main函数依次调用插件逻辑：</p>
+<pre><code class="language-java">package com.xxg.main;
+
+import java.util.List;
+
+public class Main {
+	public static void main(String[] args) {
+		try {
+			List&lt;Plugin&gt; pluginList = XMLParser.getPluginList();
+			PluginManager pluginManager = new PluginManager(pluginList);
+			for(Plugin plugin : pluginList) {
+				PluginService pluginService = pluginManager.getInstance(plugin.getClassName());
+				System.out.println(&quot;开始执行[&quot; + plugin.getName() + &quot;]插件...&quot;);
+				// 调用插件
+				pluginService.service();
+				System.out.println(&quot;[&quot; + plugin.getName() + &quot;]插件执行完成&quot;);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+</code></pre>
+<p><a name="MdRRD"></a></p>
+<h2 id="插件开发">插件开发</h2>
+<p>插件开发很简单，只需要把主程序的jar包引入到项目中，再实现主程序提供的接口就行：</p>
+<pre><code class="language-java">package com.xxg.aplugin;
+
+import com.xxg.main.PluginService;
+
+public class APlugin implements PluginService {
+	@Override
+	public void service() {
+		System.out.println(&quot;A客户插件正在执行~&quot;);
+	}
+}
+</code></pre>
+<p>service()方法应该实现客户相关的逻辑，即实现插件的功能。这里就用一句System.out.println来代替。<br />插件实现完成后，打个jar包，注意不要把主程序的部分也打到jar里。<br />再实现其他插件，插件实现完成后，配置主程序的plugin.xml。
+<a name="m16sr"></a></p>
+<h2 id="-7"><a href="http://xxgblog.com/2013/07/04/java-urlclassloader-plugin/#%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F"></a>运行程序</h2>
+<p>配置好plugin.xml，插件jar放到配置的路径下。<br />运行主程序main方法：<br /><em>开始执行[A客户插件]插件…</em><br /><em>A客户插件正在执行~</em><br /><em>[A客户插件]插件执行完成</em><br /><em>开始执行[B客户插件]插件…</em><br /><em>B客户插件正在执行~</em><br /><em>[B客户插件]插件执行完成</em><br /><em>开始执行[C客户插件]插件…</em><br /><em>C客户插件正在执行~</em><br /><em>[C客户插件]插件执行完成</em><br />以上，就完成了主程序和插件的开发。
+<a name="YMW8w"></a></p>
+<h2 id="-8"><a href="http://xxgblog.com/2013/07/04/java-urlclassloader-plugin/#%E6%89%A9%E5%B1%95%EF%BC%9Aservice-%E5%8F%82%E6%95%B0%E3%80%81%E8%BF%94%E5%9B%9E%E5%80%BC"></a>扩展：service()参数、返回值</h2>
+<p>如果逻辑需要的话，service()可以添加参数和返回值。例如主程序需要传入数据给插件，可以加入参数，插件需要返回结果给主程序，可以加入返回值。<br />例如传给插件一些插件需要的配置项。在上面的场景中，各个客户的需求不同。A需要FTP上传，那么需要FTP服务器的地址、端口号、用户名、密码配置项；B需要HTTP请求，那么需要请求地址配置项；C需要发送邮件，那么需要e-mail地址配置项。<br />这些配置项可以统一配置在XML或数据库中。
+<a name="XML"></a></p>
+<h3 id="-9"><a href="http://xxgblog.com/2013/07/04/java-urlclassloader-plugin/#XML"></a>XML</h3>
+<p>每个插件元素中加入<properties>元素来配置。</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;plugins&gt;
+	&lt;plugin&gt;
+		&lt;name&gt;A客户插件&lt;/name&gt;
+		&lt;jar&gt;D:/plugin/a-plugin.jar&lt;/jar&gt;
+		&lt;class&gt;com.xxg.aplugin.APlugin&lt;/class&gt;
+		&lt;properties&gt;
+			&lt;property name=&quot;FTP_IP&quot;&gt;192.168.7.1&lt;/property&gt;
+			&lt;property name=&quot;FTP_PORT&quot;&gt;21&lt;/property&gt;
+			&lt;property name=&quot;FTP_USERNAME&quot;&gt;XXG&lt;/property&gt;
+			&lt;property name=&quot;FTP_PASSWORD&quot;&gt;123456&lt;/property&gt;
+		&lt;/properties&gt;
+	&lt;/plugin&gt;
+	&lt;plugin&gt;
+		&lt;name&gt;B客户插件&lt;/name&gt;
+		&lt;jar&gt;D:/plugin/b-plugin.jar&lt;/jar&gt;
+		&lt;class&gt;com.xxg.bplugin.BPlugin&lt;/class&gt;
+		&lt;properties&gt;
+			&lt;property name=&quot;URL&quot;&gt;http://www.xxg.com/api&lt;/property&gt;
+		&lt;/properties&gt;
+	&lt;/plugin&gt;
+	&lt;plugin&gt;
+		&lt;name&gt;C客户插件&lt;/name&gt;
+		&lt;jar&gt;D:/plugin/c-plugin.jar&lt;/jar&gt;
+		&lt;class&gt;com.xxg.cplugin.CPlugin&lt;/class&gt;
+		&lt;properties&gt;
+			&lt;property name=&quot;EMAIL&quot;&gt;xxg@xxg.com&lt;/property&gt;
+		&lt;/properties&gt;
+	&lt;/plugin&gt;
+&lt;/plugins&gt;
+</code></pre>
+<p><a name="gUJqx"></a></p>
+<h3 id="数据库">数据库</h3>
+<p>如果使用数据库配置的话，数据库要再加一个插件配置表（plugin_config_info）：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">id</th>
+<th style="text-align:left">plugin_id</th>
+<th style="text-align:left">name</th>
+<th style="text-align:left">value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1</td>
+<td style="text-align:left">1</td>
+<td style="text-align:left">FTP_IP</td>
+<td style="text-align:left">192.168.7.1</td>
+</tr>
+<tr>
+<td style="text-align:left">2</td>
+<td style="text-align:left">1</td>
+<td style="text-align:left">FTP_PORT</td>
+<td style="text-align:left">21</td>
+</tr>
+<tr>
+<td style="text-align:left">3</td>
+<td style="text-align:left">1</td>
+<td style="text-align:left">FTP_USERNAME</td>
+<td style="text-align:left">XXG</td>
+</tr>
+<tr>
+<td style="text-align:left">4</td>
+<td style="text-align:left">1</td>
+<td style="text-align:left">FTP_PASSWORD</td>
+<td style="text-align:left">123456</td>
+</tr>
+<tr>
+<td style="text-align:left">5</td>
+<td style="text-align:left">2</td>
+<td style="text-align:left">URL</td>
+<td style="text-align:left"><a href="http://www.xxg.com/api">http://www.xxg.com/api</a></td>
+</tr>
+<tr>
+<td style="text-align:left">6</td>
+<td style="text-align:left">3</td>
+<td style="text-align:left">EMAIL</td>
+<td style="text-align:left"><a href="mailto:xxg@xxg.com">xxg@xxg.com</a></td>
+</tr>
+</tbody>
+</table>
+<p>主程序定义接口，加入一个Map&lt;String,String&gt;参数来传入这些配置：</p>
+<pre><code class="language-java">package com.xxg.main;
+
+import java.util.Map;
+
+public interface PluginService {
+	public void service(Map&lt;String,String&gt; configs);
+}
+</code></pre>
+<p>在插件中，可以获取这些配置：</p>
+<pre><code class="language-java">package com.xxg.aplugin;
+
+import java.util.Map;
+
+import com.xxg.main.PluginService;
+
+public class APlugin implements PluginService {
+	@Override
+	public void service(Map&lt;String, String&gt; configs) {
+		String ftpIp = configs.get(&quot;FTP_IP&quot;);
+		String ftpPort = configs.get(&quot;FTP_PORT&quot;);
+		String ftpUsername = configs.get(&quot;FTP_USERNAME&quot;);
+		String ftpPassword = configs.get(&quot;FTP_PASSWORD&quot;);
+		
+		// ...
+	}
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[嵌套练习]]></title>
         <id>https://liujinhua306.github.io/post/qian-tao-lian-xi</id>
