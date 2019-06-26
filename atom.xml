@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>http://blogs.liusuisui.cn</id>
+    <id>https://liujinhua306.github.io</id>
     <title>suisuipingan</title>
-    <updated>2019-06-26T06:15:59.784Z</updated>
+    <updated>2019-06-26T06:19:12.546Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="http://blogs.liusuisui.cn"/>
-    <link rel="self" href="http://blogs.liusuisui.cn/atom.xml"/>
+    <link rel="alternate" href="https://liujinhua306.github.io"/>
+    <link rel="self" href="https://liujinhua306.github.io/atom.xml"/>
     <subtitle>温故而知新</subtitle>
-    <logo>http://blogs.liusuisui.cn/images/avatar.png</logo>
-    <icon>http://blogs.liusuisui.cn/favicon.ico</icon>
+    <logo>https://liujinhua306.github.io/images/avatar.png</logo>
+    <icon>https://liujinhua306.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, suisuipingan</rights>
     <entry>
         <title type="html"><![CDATA[Java桥接模式(bridge)]]></title>
-        <id>http://blogs.liusuisui.cn/post/bridge</id>
-        <link href="http://blogs.liusuisui.cn/post/bridge">
+        <id>https://liujinhua306.github.io/post/bridge</id>
+        <link href="https://liujinhua306.github.io/post/bridge">
         </link>
         <updated>2019-06-26T06:10:04.000Z</updated>
         <content type="html"><![CDATA[<p><a name="Iz1nV"></a></p>
@@ -158,8 +158,8 @@ class Laptop2 extends Computer2 {
     </entry>
     <entry>
         <title type="html"><![CDATA[Java通过URLClassLoader让程序支持插件扩展]]></title>
-        <id>http://blogs.liusuisui.cn/post/chajian</id>
-        <link href="http://blogs.liusuisui.cn/post/chajian">
+        <id>https://liujinhua306.github.io/post/chajian</id>
+        <link href="https://liujinhua306.github.io/post/chajian">
         </link>
         <updated>2019-06-26T03:33:25.000Z</updated>
         <content type="html"><![CDATA[<p>插件(Plugin)是什么不用多说。常用的软件，例如Eclipse、Photoshop、VisualStudio，都支持插件扩展。插件可以动态给软件添加一些功能，也可以随时删除，这样的好处是任何人都可以给这个软件进行功能上的扩展，而不用去改软件本身的代码。
@@ -482,8 +482,8 @@ public class APlugin implements PluginService {
     </entry>
     <entry>
         <title type="html"><![CDATA[嵌套练习]]></title>
-        <id>http://blogs.liusuisui.cn/post/qian-tao-lian-xi</id>
-        <link href="http://blogs.liusuisui.cn/post/qian-tao-lian-xi">
+        <id>https://liujinhua306.github.io/post/qian-tao-lian-xi</id>
+        <link href="https://liujinhua306.github.io/post/qian-tao-lian-xi">
         </link>
         <updated>2019-06-26T03:22:22.000Z</updated>
         <content type="html"><![CDATA[<p><img src="https://img.shields.io/badge/auth-liujinhua-blue.svg#align=left&amp;display=inline&amp;height=20&amp;originHeight=20&amp;originWidth=92&amp;status=done&amp;width=92" alt="">  <img src="https://img.shields.io/badge/postgresl-9.6-red.svg#align=left&amp;display=inline&amp;height=20&amp;originHeight=20&amp;originWidth=88&amp;status=done&amp;width=88" alt=""></p>
@@ -549,8 +549,8 @@ order by cid,score desc;
     </entry>
     <entry>
         <title type="html"><![CDATA[exists练习]]></title>
-        <id>http://blogs.liusuisui.cn/post/exists-lian-xi</id>
-        <link href="http://blogs.liusuisui.cn/post/exists-lian-xi">
+        <id>https://liujinhua306.github.io/post/exists-lian-xi</id>
+        <link href="https://liujinhua306.github.io/post/exists-lian-xi">
         </link>
         <updated>2019-06-26T03:16:24.000Z</updated>
         <content type="html"><![CDATA[<p><img src="https://img.shields.io/badge/postgresl-9.6-red.svg#align=left&amp;display=inline&amp;height=24&amp;originHeight=20&amp;originWidth=88&amp;status=done&amp;width=106" alt=""></p>
@@ -730,8 +730,8 @@ WHERE
     </entry>
     <entry>
         <title type="html"><![CDATA[postgresql常用命令]]></title>
-        <id>http://blogs.liusuisui.cn/post/postgresql-chang-yong-ming-ling</id>
-        <link href="http://blogs.liusuisui.cn/post/postgresql-chang-yong-ming-ling">
+        <id>https://liujinhua306.github.io/post/postgresql-chang-yong-ming-ling</id>
+        <link href="https://liujinhua306.github.io/post/postgresql-chang-yong-ming-ling">
         </link>
         <updated>2019-06-26T03:12:12.000Z</updated>
         <content type="html"><![CDATA[<p><img src="https://img.shields.io/badge/author-liujinhua-blue.svg#align=left&amp;display=inline&amp;height=20&amp;originHeight=20&amp;originWidth=104&amp;status=done&amp;width=104" alt=""> 
@@ -834,8 +834,8 @@ Where tablename like 't_siem_original_log_%' and tablename &lt; 't_siem_original
     </entry>
     <entry>
         <title type="html"><![CDATA[postgresql 脚本语句练习]]></title>
-        <id>http://blogs.liusuisui.cn/post/postgresql</id>
-        <link href="http://blogs.liusuisui.cn/post/postgresql">
+        <id>https://liujinhua306.github.io/post/postgresql</id>
+        <link href="https://liujinhua306.github.io/post/postgresql">
         </link>
         <updated>2019-06-26T03:09:15.000Z</updated>
         <content type="html"><![CDATA[<pre><code class="language-sql">DO
