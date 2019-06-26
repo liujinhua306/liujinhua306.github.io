@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://liujinhua306.github.io</id>
     <title>suisuipingan</title>
-    <updated>2019-06-26T03:13:06.053Z</updated>
+    <updated>2019-06-26T03:14:22.959Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://liujinhua306.github.io"/>
     <link rel="self" href="https://liujinhua306.github.io/atom.xml"/>
@@ -16,7 +16,8 @@
         <link href="https://liujinhua306.github.io/post/postgresql-chang-yong-ming-ling">
         </link>
         <updated>2019-06-26T03:12:12.000Z</updated>
-        <content type="html"><![CDATA[<p><img src="https://img.shields.io/badge/author-liujinhua-blue.svg#align=left&amp;display=inline&amp;height=20&amp;originHeight=20&amp;originWidth=104&amp;status=done&amp;width=104" alt="">  <img src="https://img.shields.io/badge/postgresql-9.6-red.svg#align=left&amp;display=inline&amp;height=20&amp;originHeight=20&amp;originWidth=94&amp;status=done&amp;width=94" alt=""></p>
+        <content type="html"><![CDATA[<p><img src="https://img.shields.io/badge/author-liujinhua-blue.svg#align=left&amp;display=inline&amp;height=20&amp;originHeight=20&amp;originWidth=104&amp;status=done&amp;width=104" alt=""> 
+<img src="https://img.shields.io/badge/postgresql-9.6-red.svg#align=left&amp;display=inline&amp;height=20&amp;originHeight=20&amp;originWidth=94&amp;status=done&amp;width=94" alt=""></p>
 <p><a name="86fb9487"></a></p>
 <h4 id="常规操作">常规操作</h4>
 <ol>
