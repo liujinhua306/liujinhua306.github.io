@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>freemarker Java 模板引擎 基本语法 | suisuipingan</title>
+<meta name="description" content="温故而知新">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://liujinhua306.github.io/favicon.ico?v=1561531325800">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://liujinhua306.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://liujinhua306.github.io">
+        <img src="https://liujinhua306.github.io/images/avatar.png?v=1561531325800" class="site-logo">
+        <h1 class="site-title">suisuipingan</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives/" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags/" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://liujinhua306.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">freemarker Java 模板引擎 基本语法</h2>
+            <div class="post-date">2019-06-26</div>
+            
+            <div class="post-content">
+              <p><a name="7w7Tb"></a></p>
+<h3 id="版本说明">版本说明</h3>
+<p>DEA :STS<br />JDK：1.8<br />freemarker Version:2.3.28<br />这里将通过maven项目进行说明我们的用法。首先引入freemarker 依赖到我们的maven项目中</p>
+<pre><code class="language-xml"> &lt;dependency&gt;
+	  &lt;groupId&gt;org.freemarker&lt;/groupId&gt;
+	  &lt;artifactId&gt;freemarker&lt;/artifactId&gt;
+	  &lt;version&gt;2.3.28&lt;/version&gt;
+	&lt;/dependency&gt;
+</code></pre>
+<p><a name="0QcmA"></a></p>
+<h2 id="1-freemarker-用法之-hello-word">1 freemarker 用法之 Hello word</h2>
+<p>在resource目录下创建template目录并添加helloworld.ftl 模板文件 内容如下：</p>
+<pre><code class="language-html">&lt;html&gt;               
+&lt;head&gt;  
+	&lt;title&gt;hello world&lt;/title&gt;
+&lt;/head&gt; 
+ &lt;body&gt; 
+	&lt;h1&gt;this is ${who} hello World&lt;/h1&gt;
+ 
+&lt;/body&gt;  
+&lt;/html&gt; 
+</code></pre>
+<p>创建配置实例 并将模板和数据进行输出</p>
+<pre><code class="language-java">package cn.lijunkui.examples;
+ 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
+ 
+import org.junit.Test;
+ 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+ 
+public class FreemarkerDemo {
+	@Test
+	public void helloWord() throws IOException, TemplateException {
+		
+		Configuration cfg = new Configuration(Configuration.VERSION_2_3_28);
+		//指定模板文件的来源
+		String path = FreemarkerDemo.class.getClassLoader().getResource(&quot;template&quot;).getPath();
+		cfg.setDirectoryForTemplateLoading(new File(path));
+		//这是模板的编码
+		cfg.setDefaultEncoding(&quot;UTF-8&quot;);
+		//获取模板
+		Template template = cfg.getTemplate(&quot;helloworld.ftl&quot;); 
+		//创建FreeMarker的数据模型  
+        Map&lt;String,String&gt; root = new HashMap&lt;String,String&gt;();  
+        root.put(&quot;who&quot;,&quot;freemarker&quot;);
+        //这是输出文件
+        File file = new File(&quot;D://&quot; +&quot;helloWord.html&quot;);
+		Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+		//将模板与数据模型合并
+        template.process(root, out); 
+        out.flush();  
+        out.close();  
+	}
+}
+
+
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814065943-228c1c79-6a5c-4ef5-a5af-6165e0b6f5cc.png#align=left&amp;display=inline&amp;height=210&amp;originHeight=210&amp;originWidth=431&amp;size=0&amp;status=done&amp;width=431" alt=""></p>
+<p><a name="u8P05"></a></p>
+<h2 id="2-data-model数据模型">2 data-model：数据模型</h2>
+<p>hello word的示例其实就是 Template + data-model = output 接下来我们引用一下官方的示例介绍一下数据模型<br />数据模型是树状结构 如下图<br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814103044-fca371e7-c597-4c80-9338-1679d4271351.png#align=left&amp;display=inline&amp;height=203&amp;originHeight=203&amp;originWidth=608&amp;size=0&amp;status=done&amp;width=608" alt=""><br />以上只是一个可视化; 数据模型不是文本格式，而是来自Java对象。对于Java程序员来说，root可能是带有getUser() 和getLatestProduct()方法的Java对象，或者是Map带有&quot;user&quot;和&quot;latestProducts&quot;键的Java 。同样， latestProduct也许是一个Java对象 getUrl()和getName() 方法。</p>
+<pre><code class="language-html">&lt;html&gt; 
+&lt;head&gt; 
+  &lt;title&gt;欢迎！&lt;/ title&gt; 
+&lt;/head&gt; 
+&lt;body&gt; 
+  &lt;h1&gt;欢迎${user}！&lt;/ h1&gt; 
+  &lt;p&gt;我们的最新产品：
+  &lt;a href =&quot;${latestProduct.url}&quot;&gt; ${latestProduct.name} &lt;/a&gt;！
+&lt;/body&gt; 
+&lt;/html&gt;
+
+</code></pre>
+<pre><code class="language-java">@Test
+	public void dataModel() throws IOException, TemplateException {
+		Configuration cfg = new Configuration(Configuration.VERSION_2_3_28);
+		//指定模板文件的来源
+		String path = FreemarkerDemo.class.getClassLoader().getResource(&quot;template&quot;).getPath();
+		cfg.setDirectoryForTemplateLoading(new File(path));
+		//这是模板的编码
+		cfg.setDefaultEncoding(&quot;UTF-8&quot;);
+		//获取模板
+		Template template = cfg.getTemplate(&quot;data-model.ftl&quot;); 
+		//创建FreeMarker的数据模型  
+        Map&lt;String,Object&gt; root = new HashMap&lt;String,Object&gt;();  
+        root.put(&quot;user&quot;,&quot;Big Joe&quot;);
+        Product product = new Product();
+        product.setName(&quot;绿色鼠标&quot;);
+        product.setUrl(&quot;products/greenmouse.html&quot;);
+        root.put(&quot;latestProduct&quot;,product);
+        //这是输出文件
+        File file = new File(&quot;D://&quot; +&quot;dataModel.html&quot;);
+		Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+		//将模板与数据模型合并
+        template.process(root, out); 
+        out.flush();  
+        out.close();  
+	}
+
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814164673-6cc7df56-9a62-4fcb-8295-bf9b5dd11749.png#align=left&amp;display=inline&amp;height=252&amp;originHeight=252&amp;originWidth=592&amp;size=0&amp;status=done&amp;width=592" alt=""></p>
+<p><a name="8cevq"></a></p>
+<h2 id="3-freemarker-注释">3 freemarker 注释</h2>
+<p>我们可以通过 &lt;#-- 注释内容 --&gt; 来进行注释 如下图<br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814195658-6d1e4281-6e3c-43d5-95f4-4f80487e1c60.png#align=left&amp;display=inline&amp;height=249&amp;originHeight=249&amp;originWidth=566&amp;size=0&amp;status=done&amp;width=566" alt="">
+<a name="HkYPl"></a></p>
+<h2 id="4-freemarker-条件指令">4 freemarker 条件指令</h2>
+<p>我们可以通过&lt;#if&gt;  &lt;#elseIf&gt; &lt;#else&gt; 进行条件判断逻辑处理 具体操作如下<br />条件指令模板内容：</p>
+<pre><code class="language-html">
+&lt;html&gt;
+&lt;head&gt; 
+  &lt;title&gt;条件指令介绍！&lt;/ title&gt; 
+&lt;/head&gt; 
+&lt;body&gt; 
+ &lt;#-- 条件指令介绍 --&gt;
+&lt;#if (5 &gt; 4) &gt; 
+	5 比较大
+&lt;/#if&gt;
+-------------------------------
+&lt;#if (!false)&gt;
+	!false == true
+&lt;/#if&gt;
+-----------------------------
+&lt;#if (&quot;a&quot; == &quot;b&quot;)&gt;
+	a 和 b 相同	
+&lt;#else&gt;
+	a 和 b 不相同
+&lt;/#if&gt;
+-----------------------------
+&lt;#if ( c == d)&gt;
+	c 和 d 相同	
+	&lt;#elseif (&quot;a&quot; != &quot;b&quot;)&gt;
+	c 和 d 不相同
+	&lt;#else&gt;
+	出错了！
+&lt;/#if&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+</code></pre>
+<p>条件指令测试用例： <br />这里我们对测试用例进行了封装，后面的测试用例都将调用 <strong>initTemplate</strong> 来进行测试</p>
+<pre><code class="language-java">@Test
+	public void condition() throws IOException, TemplateException {
+		Map root = new HashMap();
+		root.put(&quot;c&quot;, &quot;c&quot;);
+		root.put(&quot;d&quot;, &quot;d&quot;);
+		initTemplate(&quot;condition&quot;,root);
+	}
+ 
+	public void initTemplate(String templateName,Map root) throws IOException, TemplateException {
+		Configuration cfg = new Configuration(Configuration.VERSION_2_3_28);
+		//指定模板文件的来源
+		String path = FreemarkerDemo.class.getClassLoader().getResource(&quot;template&quot;).getPath();
+		cfg.setDirectoryForTemplateLoading(new File(path));
+		//这是模板的编码
+		cfg.setDefaultEncoding(&quot;UTF-8&quot;);
+		//获取模板
+		Template template = cfg.getTemplate(templateName+&quot;.ftl&quot;); 
+		//创建FreeMarker的数据模型  
+      
+        //这是输出文件
+        File file = new File(&quot;D://&quot; +templateName+&quot;.html&quot;);
+		Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+		//将模板与数据模型合并
+        template.process(root, out); 
+        out.flush();  
+        out.close();  
+	}
+
+</code></pre>
+<p><a name="UVRuU"></a></p>
+<h2 id="5-freemarker-list-指令">5 freemarker list 指令</h2>
+<p>我们可以通过 &lt;#list 序列 as item&gt;  来进行序列的遍历。另外list 还有一些内置的序列的函数</p>
+<ul>
+<li>?size:序列的数量</li>
+<li>_index ：序列中元素的角标</li>
+<li>_has_next：是否是当前迭代循环中的最后一项</li>
+<li>?sort：对序列中的元素进行排序</li>
+<li>？sort_by：根据实例中的具体的否个字段进行排序</li>
+<li>?is_enumerable:是否是集合</li>
+</ul>
+<p>测试list模板内容</p>
+<pre><code class="language-html">&lt;html&gt;
+&lt;head&gt; 
+  &lt;title&gt;list 指令介绍！&lt;/ title&gt; 
+&lt;/head&gt; 
+&lt;body&gt; 
+&lt;#list 0..5 as item&gt;
+	${item}
+&lt;/#list&gt;
+-----------------------------
+_index:交标值 ,?size 获取集合的长度
+list的长度：${wordList?size}
+&lt;#list wordList as word&gt;
+	当前的交标是：${word_index}值是：${word}
+&lt;/#list&gt;
+--------------------------------
+_has_next：是否是当前迭代循环中的最后一项
+&lt;#list wordList as word&gt;
+	&lt;#if word_has_next&gt;
+		不是最后一项：${word},
+	&lt;#else&gt;
+		是最后一项：${word}
+	&lt;/#if&gt;                         
+&lt;/#list&gt;
+---------------------------------
+字符串（按首字母排序）,数字，日期值
+正常遍历
+&lt;#list wordList as word&gt;
+	${word}                    
+&lt;/#list&gt;
+升序
+&lt;#list wordList?sort as word&gt;
+	${word}                    
+&lt;/#list&gt;
+降序
+&lt;#list wordList?sort?reverse as word&gt;
+	${word}                    
+&lt;/#list&gt;
+反向遍历
+&lt;#list wordList?reverse as word&gt;
+	${word}                    
+&lt;/#list&gt;
+ 
+-------------------------------------
+正常遍历
+&lt;#list productList as p&gt;
+	${p.name}#${p.url}#${p.saleNum}                      
+&lt;/#list&gt;
+升序
+&lt;#list productList?sort_by(&quot;saleNum&quot;) as p&gt;
+	${p.name}#${p.url}#${p.saleNum}                    
+&lt;/#list&gt;
+降序
+&lt;#list productList?sort_by(&quot;saleNum&quot;)?reverse as p&gt;
+	${p.name}#${p.url}#${p.saleNum}                     
+&lt;/#list&gt;
+反向遍历
+&lt;#list productList?reverse as p&gt;
+	${p.name}#${p.url}#${p.saleNum}                      
+&lt;/#list&gt;
+---------------------------------------
+&lt;#list map?keys as item&gt;
+	&lt;#if (item == &quot;productMap3&quot;)&gt;
+		&lt;#list map[item] as p&gt;
+			${p.name}#${p.url}#${p.saleNum}                      
+		&lt;/#list&gt;
+	&lt;#else&gt;
+		${map[item]}
+	&lt;/#if&gt;
+&lt;/#list&gt;
+----------------------------------------
+?is_string：是否是字符串
+&lt;#list map?keys as item&gt;
+	&lt;#if map[item]?is_string&gt;
+		
+		${map[item]}
+	&lt;#else&gt;
+		&lt;#list map[item] as p&gt;
+			${p.name}#${p.url}#${p.saleNum}                      
+		&lt;/#list&gt;
+	&lt;/#if&gt;
+&lt;/#list&gt;
+-----------------------------------------
+?is_enumerable:是否是集合
+&lt;#list map?keys as item&gt;
+	&lt;#if map[item]?is_enumerable&gt;
+		&lt;#list map[item] as p&gt;
+			${p.name}#${p.url}#${p.saleNum}                      
+		&lt;/#list&gt;
+	&lt;#else&gt;
+		${map[item]}
+	&lt;/#if&gt;
+&lt;/#list&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+</code></pre>
+<p>list模板内容测试用例：</p>
+<pre><code class="language-java">@Test
+	public void list() throws IOException, TemplateException {
+		Map root = new HashMap();
+		List wordList = new ArrayList();
+		wordList.add(5);
+		wordList.add(3);
+		wordList.add(6);
+		root.put(&quot;wordList&quot;, wordList);
+		
+		List&lt;Product&gt; productList = new ArrayList&lt;Product&gt;();
+		productList.add(new Product(&quot;123.html&quot;, &quot;苹果&quot;, 5));
+		productList.add(new Product(&quot;13.html&quot;, &quot;香蕉&quot;, 3));
+		productList.add(new Product(&quot;13.html&quot;, &quot;芒果&quot;, 15));
+		root.put(&quot;productList&quot;, productList);
+		
+		Map map = new HashMap();
+		map.put(&quot;productMap&quot;, &quot;a&quot;);
+		map.put(&quot;productMap2&quot;, &quot;b&quot;);
+		map.put(&quot;productMap3&quot;, productList);
+		root.put(&quot;map&quot;, map);
+		
+		initTemplate(&quot;list&quot;,root);
+	}
+
+</code></pre>
+<p>list模板内容测试结果：</p>
+<pre><code class="language-html">&lt;html&gt;
+&lt;head&gt; 
+  &lt;title&gt;list 指令介绍！&lt;/ title&gt; 
+&lt;/head&gt; 
+&lt;body&gt; 
+	0
+	1
+	2
+	3
+	4
+	5
+-----------------------------
+_index:交标值 ,?size 获取集合的长度
+list的长度：3
+	当前的交标是：0值是：5
+	当前的交标是：1值是：3
+	当前的交标是：2值是：6
+--------------------------------
+_has_next：是否是当前迭代循环中的最后一项
+		不是最后一项：5,
+                         
+		不是最后一项：3,
+                         
+		是最后一项：6
+	                         
+---------------------------------
+字符串（按首字母排序）,数字，日期值
+正常遍历
+	5                    
+	3                    
+	6                    
+升序
+	3                    
+	5                    
+	6                    
+降序
+	6                    
+	5                    
+	3                    
+反向遍历
+	6                    
+	3                    
+	5                    
+ 
+-------------------------------------
+正常遍历
+	苹果#123.html#5                      
+	香蕉#13.html#3                      
+	芒果#13.html#15                      
+升序
+	香蕉#13.html#3                    
+	苹果#123.html#5                    
+	芒果#13.html#15                    
+降序
+	芒果#13.html#15                     
+	苹果#123.html#5                     
+	香蕉#13.html#3                     
+反向遍历
+	芒果#13.html#15                      
+	香蕉#13.html#3                      
+	苹果#123.html#5                      
+---------------------------------------
+		a
+		b
+			苹果#123.html#5                      
+			香蕉#13.html#3                      
+			芒果#13.html#15                      
+----------------------------------------
+		
+		a
+		
+		b
+			苹果#123.html#5                      
+			香蕉#13.html#3                      
+			芒果#13.html#15                      
+-----------------------------------------
+		a
+		b
+			苹果#123.html#5                      
+			香蕉#13.html#3                      
+			芒果#13.html#15                      
+&lt;/body&gt;
+&lt;/html&gt;
+
+</code></pre>
+<p><a name="LuI8o"></a></p>
+<h2 id="6-freemarker-assign指令">6 freemarker assign指令</h2>
+<p>我们可以通过 assign指令在ftl中进行值的定义<br />assign指令测试模板内容：</p>
+<pre><code class="language-html">&lt;#assign name=&quot;zhuoqianmingyue&quot;&gt;
+${name}
+-----------------------------------------------------------
+&lt;#assign product={&quot;name&quot;:&quot;苹果&quot;,&quot;url&quot;:&quot;123.html&quot;,&quot;saleNum&quot;:23} &gt;
+${product.name},${product.url}，${product.saleNum}
+
+</code></pre>
+<p>assign指令测试用例：</p>
+<pre><code class="language-java">@Test
+	public void assign() throws IOException, TemplateException {
+		Map root = new HashMap();
+		initTemplate(&quot;assign&quot;,root);
+	}
+</code></pre>
+<p>assign指令测试结果：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814462614-06878373-0756-4619-a950-78adc020ae68.png#align=left&amp;display=inline&amp;height=106&amp;originHeight=106&amp;originWidth=688&amp;size=0&amp;status=done&amp;width=688" alt=""></p>
+<p><a name="bV9nj"></a></p>
+<h2 id="7-创建宏">7 创建宏</h2>
+<p>这里的宏 我们可以理解成创建方法。我们可以通过 &lt;#macro&gt;标签来定义宏。<br />创建宏模板内容如下<br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814485637-23139595-7df2-4fba-8948-76501f2165aa.png#align=left&amp;display=inline&amp;height=119&amp;originHeight=119&amp;originWidth=305&amp;size=0&amp;status=done&amp;width=305" alt=""><br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814485648-cae23d5e-e9de-48c0-9397-d07ed9c3681c.png#align=left&amp;display=inline&amp;height=120&amp;originHeight=120&amp;originWidth=291&amp;size=0&amp;status=done&amp;width=291" alt=""><br />创建宏模板测试用例：</p>
+<pre><code class="language-java">@Test
+	public void marco() throws IOException, TemplateException {
+		Map map = new HashMap();
+		initTemplate(&quot;macroShow&quot;, map);
+	}
+</code></pre>
+<p>创建宏模板测试结果： <br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814519430-64ef3d71-86f6-4239-8552-30bb9dda0edb.png#align=left&amp;display=inline&amp;height=98&amp;originHeight=98&amp;originWidth=313&amp;size=0&amp;status=done&amp;width=313" alt=""><br />嵌套指令&lt;#nested&gt; 可以执行两次相同的调用<br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814519419-3b924eb0-900b-4c88-8bfa-6687db0d09c3.png#align=left&amp;display=inline&amp;height=136&amp;originHeight=136&amp;originWidth=278&amp;size=0&amp;status=done&amp;width=278" alt=""><br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814519482-3bc93d8d-19b8-478b-89ad-11fa85513850.png#align=left&amp;display=inline&amp;height=134&amp;originHeight=134&amp;originWidth=378&amp;size=0&amp;status=done&amp;width=378" alt=""></p>
+<pre><code class="language-java">@Test
+	public void nested() throws IOException, TemplateException {
+		Map map = new HashMap();
+		initTemplate(&quot;nestedShow&quot;, map);
+	}
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814554202-388f545b-77d9-491e-b34d-5037dbc93a7f.png#align=left&amp;display=inline&amp;height=104&amp;originHeight=104&amp;originWidth=248&amp;size=0&amp;status=done&amp;width=248" alt=""></p>
+<p><a name="9nmEY"></a></p>
+<h2 id="8-include指令">8 include指令</h2>
+<p>include引入的文件内容freemarker将解析其中的freemarker语法并移交给模板，同时assign的值可以互相调用<br />include 引入ftl模板<br />parent.ftl</p>
+<pre><code class="language-html">&lt;html&gt;
+&lt;body&gt;
+我是公共的页面 ${who}引用啦我!
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>include.ftl</p>
+<pre><code class="language-html">我是include页面
+&lt;#assign who=&quot;include.ftl&quot;&gt;
+&lt;#include &quot;parent.ftl&quot;/&gt;
+</code></pre>
+<p>include指令的测试结果：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814619013-47cbf9b3-1197-40cc-88e0-201fc4a6e75a.png#align=left&amp;display=inline&amp;height=159&amp;originHeight=159&amp;originWidth=420&amp;size=0&amp;status=done&amp;width=420" alt=""><br />include 引入html<br />在resource 目录下创建include.html<br /> <img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814644207-e1f28a5c-cd0b-4201-bab6-c2fdd10e4616.png#align=left&amp;display=inline&amp;height=240&amp;originHeight=240&amp;originWidth=445&amp;size=0&amp;status=done&amp;width=445" alt=""><br />模板内容：<br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814644189-b55a0b9b-4d3b-4d68-8267-7747765d7e7a.png#align=left&amp;display=inline&amp;height=119&amp;originHeight=119&amp;originWidth=332&amp;size=0&amp;status=done&amp;width=332" alt=""><br />测试用例：</p>
+<pre><code class="language-java">@Test
+	public void include2() throws IOException, TemplateException {
+		Map map = new HashMap();
+		initTemplate(&quot;include2&quot;, map);
+	}
+</code></pre>
+<p>测试结果：<br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814676554-eb9ff76a-82cd-4937-a874-e226b715b127.png#align=left&amp;display=inline&amp;height=235&amp;originHeight=235&amp;originWidth=397&amp;size=0&amp;status=done&amp;width=397" alt="">
+<a name="ai1ig"></a></p>
+<h2 id="9-import指令">9 import指令</h2>
+<p>import引入的文件内容freemarker将不会解析其中的freemarker语法，同时assign的值可以可以互相调用。他可以创建一个命名空间 通过该命名调用import 模板中的变量和宏<br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814697825-a8b7badd-d51e-4ccf-96b1-584a254af1ec.png#align=left&amp;display=inline&amp;height=93&amp;originHeight=93&amp;originWidth=274&amp;size=0&amp;status=done&amp;width=274" alt=""></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814697830-37afe7c0-c2cb-4d6e-9c46-36894826e431.png#align=left&amp;display=inline&amp;height=132&amp;originHeight=132&amp;originWidth=318&amp;size=0&amp;status=done&amp;width=318" alt=""><br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814697834-4be38d83-8c80-458a-be15-4ca3b2fcda98.png#align=left&amp;display=inline&amp;height=137&amp;originHeight=137&amp;originWidth=397&amp;size=0&amp;status=done&amp;width=397" alt=""></p>
+<pre><code class="language-java">@Test
+	public void importFun() throws IOException, TemplateException {
+		Map map = new HashMap();
+		initTemplate(&quot;importFun&quot;, map);
+	}
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814729133-39821a3a-1f79-4712-8dee-24d696096c6e.png#align=left&amp;display=inline&amp;height=102&amp;originHeight=102&amp;originWidth=364&amp;size=0&amp;status=done&amp;width=364" alt=""><br />import 使用宏<br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814729147-b6039c87-ddc8-4a03-b92c-fbc60fb65914.png#align=left&amp;display=inline&amp;height=93&amp;originHeight=93&amp;originWidth=271&amp;size=0&amp;status=done&amp;width=271" alt=""><br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814729181-3b57eae9-6aa3-45a0-b4aa-f42bb2837c08.png#align=left&amp;display=inline&amp;height=105&amp;originHeight=105&amp;originWidth=339&amp;size=0&amp;status=done&amp;width=339" alt=""></p>
+<pre><code class="language-java">@Test
+	public void macroImportShow() throws IOException, TemplateException {
+		Map map = new HashMap();
+		initTemplate(&quot;macroImportShow&quot;, map);
+	}
+
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814756073-b735d8c2-46a2-417b-a06d-a28fbe3a8120.png#align=left&amp;display=inline&amp;height=117&amp;originHeight=117&amp;originWidth=362&amp;size=0&amp;status=done&amp;width=362" alt=""></p>
+<p><a name="5AMZz"></a></p>
+<h2 id="10-freemarker-处理不存在或则为null的值">10 freemarker 处理不存在或则为null的值</h2>
+<p>当数据模型的key不存在或者key 的value是null 时 我们执行模板引擎进行渲染的化或报如下图的错误<br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559815678261-8789786c-31f2-47f7-8f7a-9787427f9a25.png#align=left&amp;display=inline&amp;height=93&amp;originHeight=93&amp;originWidth=698&amp;size=0&amp;status=done&amp;width=698" alt=""><br />我们可以通过在flt页面中使用！ 或者 ?if_exists 使其不做任何显示 通过我们也可以通过 ?if_exists 和??指令进行是否为空的判断。<br />测试模板内容：</p>
+<pre><code class="language-html">
+${word!}
+${word?if_exists}
+${product?if_exists.name?if_exists}
+ 
+&lt;#if word??&gt;
+&lt;#else&gt;
+	word的值为空
+&lt;/#if&gt;
+&lt;#if word?if_exists&gt;
+&lt;#else&gt;
+	word的值为空
+&lt;/#if&gt;
+</code></pre>
+<p>测试用例：</p>
+<pre><code class="language-java">@Test
+	public void ifExists() throws IOException, TemplateException {
+		Map root = new HashMap();
+		String word = null;
+		root.put(&quot;word&quot;, word);
+		
+		Product product = new Product();
+		product.setName(null);
+		root.put(&quot;product&quot;, product);
+		
+		initTemplate(&quot;ifExists&quot;,root);
+	}
+
+</code></pre>
+<p>测试结果： <br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559814877083-f7111bc6-54e9-4c07-87e9-7cc13669a078.png#align=left&amp;display=inline&amp;height=190&amp;originHeight=190&amp;originWidth=294&amp;size=0&amp;status=done&amp;width=294" alt="">
+<a name="EIIyB"></a></p>
+<h2 id="11-freemarker-内置函数">11 freemarker  内置函数</h2>
+<p>具体请参考：<a href="https://freemarker.apache.org/docs/ref_builtins.html">https://freemarker.apache.org/docs/ref_builtins.html</a><br />我们这里介绍一下经常使用的内置函数 ,我们上面在介绍list的时候 使用的 ?size就只一个内置函数
+<a name="r5RtG"></a></p>
+<h3 id="111字符串">11.1字符串</h3>
+<ul>
+<li>？length ：字符串的长度 例如：${&quot;zhuoqianmingyue&quot;?length}</li>
+<li>？index_of ：字符串中字符的位置交标 例如：${&quot;zhuoqianmingyue&quot;?index_of('yue')}</li>
+<li>？substring：截取字符串 例如：${&quot;zhuoqianmingyue&quot;?substring(1)} ${&quot;zhuoqianmingyue&quot;?substring(1,2)}</li>
+<li>？trim：去掉字符串的空格 例如：${&quot; Hello world &quot;?trim}</li>
+<li>？contains：是否包含否个字符 例如：${&quot;Hello world &quot;?contains('Hello')?string}</li>
+<li>?date：日期的转换  ，?datetime datetime的转换</li>
+<li>&lt;#assign date1=&quot;2009-10-12&quot;?date(&quot;yyyy-MM-dd&quot;)&gt;</li>
+<li>&lt;#assign date2=&quot;09:28:20&quot;?datetime(&quot;HH:mm:ss&quot;)&gt;</li>
+<li>?string：字符串格式输出 例如：${date1?string}</li>
+<li>？is_string：是否是字符串 例如：${date1?is_string?string}</li>
+</ul>
+<p>以上语法模板内容</p>
+<pre><code class="language-html">length: ${&quot;zhuoqianmingyue&quot;?length}
+index_of: ${&quot;zhuoqianmingyue&quot;?index_of('yue')}
+substring: ${&quot;zhuoqianmingyue&quot;?substring(1)} ${&quot;zhuoqianmingyue&quot;?substring(1,2)}
+trim: ${&quot; Hello world &quot;?trim}
+contains:${&quot;Hello world &quot;?contains('Hello')?string}
+ 
+&lt;#assign date1=&quot;2009-10-12&quot;?date(&quot;yyyy-MM-dd&quot;)&gt;
+&lt;#assign date2=&quot;09:28:20&quot;?datetime(&quot;HH:mm:ss&quot;)&gt;
+${date1?is_string?string}
+${date1?string}
+${date2?string}
+
+</code></pre>
+<p>测试用例：</p>
+<pre><code class="language-java">@Test
+	public void string() throws IOException, TemplateException {
+		Map map = new HashMap();
+		initTemplate(&quot;string&quot;, map);
+	}
+</code></pre>
+<p>测试结果：<br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559815174137-311cfa12-32d3-4dab-835c-3d09ce0b3aa0.png#align=left&amp;display=inline&amp;height=210&amp;originHeight=210&amp;originWidth=386&amp;size=0&amp;status=done&amp;width=386" alt=""></p>
+<p><a name="X6JfJ"></a></p>
+<h3 id="112-日期">11.2 日期</h3>
+<p>.now 获取当前时间<br />日期格式转换</p>
+<pre><code class="language-html">&lt;#assign aDateTime = .now&gt;
+${.now}
+${aDateTime?string[&quot;dd.MM.yyyy, HH:mm&quot;]}
+${aDateTime?string[&quot;EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'&quot;]}
+${aDateTime?string[&quot;EEE, MMM d, ''yy&quot;]}
+${aDateTime?string.yyyy}
+
+</code></pre>
+<pre><code class="language-java">@Test
+	public void date() throws IOException, TemplateException {
+		Map map = new HashMap();
+		initTemplate(&quot;date&quot;, map);
+	}
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559815251148-60ceb836-63f7-4bb6-9703-048f5209e62e.png#align=left&amp;display=inline&amp;height=152&amp;originHeight=152&amp;originWidth=455&amp;size=0&amp;status=done&amp;width=455" alt=""></p>
+<p><a name="DmnUL"></a></p>
+<h3 id="113-序列-sequence">11.3 序列 （Sequence）</h3>
+<ul>
+<li>？size ?reverse ?sort ?sort_by 我们已经在list 指令进行了演示 这里就不在做介绍了</li>
+<li>?chunk:序列分块遍历</li>
+<li>？first ？last：获取序列中的第一个和最后一个元素</li>
+<li>？join：拼接序列中的内容</li>
+<li>？seq_contains：序列中是否包含某个元素</li>
+<li>？seq_index_of：序列中元素的交标</li>
+</ul>
+<pre><code class="language-html">&lt;#assign seq = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']&gt;
+ 
+&lt;#list seq?chunk(4) as row&gt;
+  &lt;#list row as cell&gt;${cell} &lt;/#list&gt;
+&lt;/#list&gt;
+ 
+&lt;#list seq?chunk(4, '-') as row&gt;
+  &lt;#list row as cell&gt;${cell} &lt;/#list&gt;
+&lt;/#list&gt;
+---------------------------------------------
+ ${seq[1]} 
+ ${seq?first}  ${seq?last} 
+ ----------------------------------------------
+ &lt;#assign colors = [&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;]&gt;
+ ${colors?join(&quot;, &quot;)}
+ ---------------------------------------------
+&lt;#assign x = [&quot;red&quot;, 16, &quot;blue&quot;, &quot;cyan&quot;]&gt;
+&quot;blue&quot;: ${x?seq_contains(&quot;blue&quot;)?string(&quot;yes&quot;, &quot;no&quot;)}
+&quot;yellow&quot;: ${x?seq_contains(&quot;yellow&quot;)?string(&quot;yes&quot;, &quot;no&quot;)}
+16: ${x?seq_contains(16)?string(&quot;yes&quot;, &quot;no&quot;)}
+&quot;16&quot;: ${x?seq_contains(&quot;16&quot;)?string(&quot;yes&quot;, &quot;no&quot;)}
+-------------------------------------------------
+&lt;#assign colors = [&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;]&gt;
+${colors?seq_index_of(&quot;blue&quot;)}
+${colors?seq_index_of(&quot;red&quot;)}
+${colors?seq_index_of(&quot;purple&quot;)}
+
+</code></pre>
+<p>测试用例：</p>
+<pre><code class="language-java">@Test
+	public void sequences() throws IOException, TemplateException {
+		Map map = new HashMap();
+		initTemplate(&quot;sequences&quot;, map);
+	}
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559815340484-019624e3-5d8b-4246-b04e-157060dedc29.png#align=left&amp;display=inline&amp;height=443&amp;originHeight=443&amp;originWidth=517&amp;size=0&amp;status=done&amp;width=517" alt=""><br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559815348735-bc0d6c98-9a0f-49f5-9389-defae3d185bc.png#align=left&amp;display=inline&amp;height=443&amp;originHeight=443&amp;originWidth=517&amp;size=0&amp;status=done&amp;width=517" alt="">
+<a name="p4fba"></a></p>
+<h3 id="114-数字">11.4 数字：</h3>
+<ul>
+<li>abs：绝对值    2.3.20</li>
+<li>round:四舍五入</li>
+<li>floor:向下取整</li>
+<li>ceiling:向上取整</li>
+<li>string.number：整数数字输出</li>
+<li>string.currency：货币格式输出</li>
+<li>string.percent：百分数格式输出</li>
+</ul>
+<p></p>
+<ul>
+<li>?string[&quot;0.##&quot;]：数字显示2为小数</li>
+<li>?string[&quot;000.00&quot;]：小数左面不够0补齐</li>
+</ul>
+<pre><code class="language-html">${-5?abs}
+${4.5?round} ${4.4?round}
+${4.5?floor} ${4.5?ceiling}
+ 
+&lt;#assign x = 42&gt; 
+${x} 
+${x?string}
+${x?string.number} 
+${x?string.currency} 
+${x?string.percent} 
+ 
+${1.2345?string[&quot;0.##&quot;]}
+${1.2345?string[&quot;000.00&quot;]}
+
+</code></pre>
+<pre><code class="language-java">@Test
+	public void number() throws IOException, TemplateException {
+		Map map = new HashMap();
+		initTemplate(&quot;number&quot;, map);
+	}
+</code></pre>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1559815442183-743cd19b-fb67-4330-8823-6e70dc022258.png#align=left&amp;display=inline&amp;height=283&amp;originHeight=283&amp;originWidth=347&amp;size=0&amp;status=done&amp;width=347" alt="">
+<a name="8TBUv"></a></p>
+<h3 id="115-has_api">11.5 has_api</h3>
+<p>下面的内置函数返回的结果都是布尔型的</p>
+<ul>
+<li>is_string ：是否是String</li>
+<li>is_number :是否是数字</li>
+<li>is_boolean ：是否是布尔类型</li>
+<li>is_date ：是否是日期</li>
+<li>is_macro ：是否是宏</li>
+<li>is_sequence：是否是序列</li>
+</ul>
+<p><br />作者：IT乌托邦-桌前明月  <br />来源：CSDN  <br />原文：https://blog.csdn.net/ljk126wy/article/details/82978442  <br />版权声明：本文为博主原创文章，转载请附上博文链接！</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://liujinhua306.github.io/tag/muban" class="tag">
+                    模板
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://liujinhua306.github.io/post/thymeleaf">
+                  <h3 class="post-title">
+                    SpringBoot Thymeleaf使用教程（实用版）
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: 'b31c841058e3c035d9b2',
+        clientSecret: 'f35c94c3fd65770a0f644299d4f3eedcb22ec5a1',
+        repo: 'liujinhua306.github.io',
+        owner: 'liujinhua306',
+        admin: ['liujinhua306'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
