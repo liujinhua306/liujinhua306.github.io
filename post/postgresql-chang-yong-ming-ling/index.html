@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>postgresql常用命令 | suisuipingan</title>
+<meta name="description" content="温故而知新">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://liujinhua306.github.io/favicon.ico?v=1561518783034">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://liujinhua306.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://liujinhua306.github.io">
+        <img src="https://liujinhua306.github.io/images/avatar.png?v=1561518783034" class="site-logo">
+        <h1 class="site-title">suisuipingan</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives/" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags/" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://liujinhua306.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">postgresql常用命令</h2>
+            <div class="post-date">2019-06-26</div>
+            
+            <div class="post-content">
+              <p><img src="https://img.shields.io/badge/author-liujinhua-blue.svg#align=left&amp;display=inline&amp;height=20&amp;originHeight=20&amp;originWidth=104&amp;status=done&amp;width=104" alt="">  <img src="https://img.shields.io/badge/postgresql-9.6-red.svg#align=left&amp;display=inline&amp;height=20&amp;originHeight=20&amp;originWidth=94&amp;status=done&amp;width=94" alt=""></p>
+<p><a name="86fb9487"></a></p>
+<h4 id="常规操作">常规操作</h4>
+<ol>
+<li>登录postgreSQL所在服务器</li>
+<li>执行 psql -U postgres 启动postgreSQL终端</li>
+<li>输入数据库密码 12345)(*&amp;^%RFVwsx</li>
+<li>执行 \l 查看所有库</li>
+<li>执行 \c NXSOC5 即访问NXSOC5数据库</li>
+<li>即可执行相关SQL语句操作NXSOC5数据库</li>
+<li>\d 表名 查看表结构</li>
+</ol>
+<p><a name="157d5306"></a></p>
+<h4 id="创建数据库">创建数据库</h4>
+<pre><code class="language-sql">CREATE DATABASE database_name;
+</code></pre>
+<p><a name="34609275"></a></p>
+<h4 id="修改数据库名称及owner">修改数据库名称及owner</h4>
+<pre><code class="language-sql">ALTER DATABASE name RENAME TO new_name
+
+ALTER DATABASE name OWNER TO new_owner
+</code></pre>
+<p><a name="c40ae226"></a></p>
+<h4 id="备份恢复数据库">备份/恢复数据库</h4>
+<pre><code class="language-sql">-- postgres 数据库备份命令(该方式会生成二进制的压缩文件)
+./pg_dump --host 127.0.0.1 --port 5432 --username &quot;postgres&quot;   --format custom --blobs --verbose --file &quot;/root/socdb.backup&quot; NXSOC_MG
+
+-- NXSOC_MG 为要备份的数据库名。 输入命令后 会提示输入数据库密码。
+
+-- postgres 数据库恢复命令(适合以上备份的方式)
+./pg_restore -h 127.0.0.1 -p 5432 -U postgres -W -d NXSOC_MG -v &quot;/root/socdb.backup&quot;
+
+-W 是强制口令提示
+-- 输入命令后 会提示输入数据库密码。
+</code></pre>
+<p><a name="a301a2d4"></a></p>
+<h4 id="增加表字段和修改表字段类型">增加表字段和修改表字段类型</h4>
+<pre><code class="language-sql">alter table t_siem_dev_find alter  COLUMN  isnew type  int4 ;(修改字段)
+alter table t_siem_dev_find add  COLUMN  isnew   int4 ;(增加字段)
+</code></pre>
+<p>注意： 把id的varchar变为int</p>
+<pre><code class="language-sql">postgres=# alter table tb101 alter id type int;
+ERROR:  column &quot;id&quot; cannot be cast automatically to type integer
+HINT:  Specify a USING expression to perform the conversion.
+</code></pre>
+<p>上面这样执行后报错了<br />在没有隐式的转换下，就需要指定Using来显示的转换。</p>
+<pre><code class="language-sql">postgres=# alter table tb101 alter id type int using id::int;
+</code></pre>
+<p><a name="14dc2110"></a></p>
+<h4 id="子父表继承关系">子父表继承关系</h4>
+<pre><code class="language-sql">-- 删除子表与父表的继承关系
+alter table t_siem_original_log_20181106 no inherit t_siem_original_log
+-- 添加子表与父表的继承关系
+alter table t_siem_original_log_20181106  inherit t_siem_original_log
+</code></pre>
+<p><a name="b30cbcf3"></a></p>
+<h4 id="备份表和恢复表">备份表和恢复表</h4>
+<pre><code class="language-sql">-- 备份指定表
+./pg_dump --host 127.0.0.1 --port 5432 --username &quot;postgres&quot; -Fc -t t_siem_threat_log  -f /threatTable.backup NXSOC5
+
+-- 恢复单表
+./pg_restore -h 127.0.0.1 -p 5432 -U postgres -W -d NXSOC5 -t ti_alarm -v &quot;/alarm.backup&quot;
+-t指定表
+
+-- 以insert into 的SQL语句导出
+pg_dump -h 172.16.12.17 -U postgres --inserts -t  t_siem_moni_ne NXSOC5 &gt; /tmp/test1.sql
+</code></pre>
+<p><a name="1d259eb8"></a></p>
+<h4 id="查看postgresql的oid和表占磁盘大小">查看postgresql的oid和表占磁盘大小</h4>
+<pre><code class="language-sql">-- 查看数据库oid
+select oid,datname from pg_database; 
+-- 查看表的oid
+select oid from pg_class where relname='t_siem_alarm_active' ;
+select 
+-- 查看表占磁盘大小pg_size_pretty(pg_relation_size('t_siem_original_log_201809_39'));
+</code></pre>
+<p><a name="e0e3ddfc"></a></p>
+<h4 id="postgresql时间操作">postgresql时间操作</h4>
+<pre><code class="language-sql">-- 当前时间减去两个月
+SELECT CURRENT_DATE-interval'2 month');
+</code></pre>
+<p><a name="f6d2fa2b"></a></p>
+<h4 id="删除表的规则">删除表的规则</h4>
+<pre><code class="language-sql">DROP RULE &quot;rule_t_siem_original_log_20190426&quot; ON &quot;public&quot;.&quot;t_siem_original_log&quot;;
+</code></pre>
+<p><a name="75be9192"></a></p>
+<h4 id="sql拼接">sql拼接</h4>
+<pre><code class="language-sql">Select CONCAT( 'drop table ', tablename, ';' ) 
+FROM pg_tables
+Where tablename like 't_siem_original_log_%' and tablename &lt; 't_siem_original_log_201901_2';
+</code></pre>
+<p><a name="5512d417"></a></p>
+<h4 id="字符串截取">字符串截取</h4>
+<pre><code class="language-sql">update  t_portal_monitor_table  set srccity= substring(sitekindname from 1 for 2) where  createdatetime&gt; '2019-01-02 00:00:00'
+</code></pre>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://liujinhua306.github.io/post/postgresql">
+                  <h3 class="post-title">
+                    postgresql 脚本语句练习
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: 'b31c841058e3c035d9b2',
+        clientSecret: 'f35c94c3fd65770a0f644299d4f3eedcb22ec5a1',
+        repo: 'liujinhua306.github.io',
+        owner: 'liujinhua306',
+        admin: ['liujinhua306'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
