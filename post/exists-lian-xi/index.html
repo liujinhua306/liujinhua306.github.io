@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>exists练习 | suisuipingan</title>
+<meta name="description" content="温故而知新">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://liujinhua306.github.io/favicon.ico?v=1561519028629">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://liujinhua306.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://liujinhua306.github.io">
+        <img src="https://liujinhua306.github.io/images/avatar.png?v=1561519028629" class="site-logo">
+        <h1 class="site-title">suisuipingan</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives/" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags/" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://liujinhua306.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">exists练习</h2>
+            <div class="post-date">2019-06-26</div>
+            
+            <div class="post-content">
+              <p><img src="https://img.shields.io/badge/postgresl-9.6-red.svg#align=left&amp;display=inline&amp;height=24&amp;originHeight=20&amp;originWidth=88&amp;status=done&amp;width=106" alt=""></p>
+<pre><code class="language-sql">-- 学生表
+CREATE TABLE `student` (
+  `id` int(11) NOT NULL,
+  `name` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO student (`id`, `name`) VALUES ('100', 'xiaoming');
+INSERT INTO student (`id`, `name`) VALUES ('101', 'tom');
+INSERT INTO student (`id`, `name`) VALUES ('102', 'blue');
+INSERT INTO student (`id`, `name`) VALUES ('103', 'jim');
+INSERT INTO student (`id`, `name`) VALUES ('104', 'tonny');
+
+
+-- 课程表
+CREATE TABLE `course` (
+  `id` int(11) NOT NULL,
+  `C_NAME` varchar(20) DEFAULT NULL,
+  `C_NO` varchar(10) DEFAULT NULL,
+  KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO course (`id`, `C_NAME`, `C_NO`) VALUES ('200', 'java', NULL);
+INSERT INTO course (`id`, `C_NAME`, `C_NO`) VALUES ('201', 'php', NULL);
+INSERT INTO course (`id`, `C_NAME`, `C_NO`) VALUES ('202', 'python', NULL);
+INSERT INTO course (`id`, `C_NAME`, `C_NO`) VALUES ('203', 'c++', NULL);
+INSERT INTO course (`id`, `C_NAME`, `C_NO`) VALUES ('204', 'c#', NULL);
+
+
+-- 选课表
+CREATE TABLE `select_course` (
+  `id` int(11) NOT NULL,
+  `STUDENT_ID` int(11) DEFAULT NULL,
+  `COURSE_ID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `foreign_key_stu` (`STUDENT_ID`),
+  KEY `foreign_key_sou` (`COURSE_ID`),
+  CONSTRAINT `foreign_key_sou` FOREIGN KEY (`COURSE_ID`) REFERENCES `course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `foreign_key_stu` FOREIGN KEY (`STUDENT_ID`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO select_course (`id`, `STUDENT_ID`, `COURSE_ID`) VALUES ('1', '100', '200');
+INSERT INTO select_course (`id`, `STUDENT_ID`, `COURSE_ID`) VALUES ('2', '100', '201');
+INSERT INTO select_course (`id`, `STUDENT_ID`, `COURSE_ID`) VALUES ('3', '100', '202');
+INSERT INTO select_course (`id`, `STUDENT_ID`, `COURSE_ID`) VALUES ('4', '100', '203');
+INSERT INTO select_course (`id`, `STUDENT_ID`, `COURSE_ID`) VALUES ('5', '100', '204');
+INSERT INTO select_course (`id`, `STUDENT_ID`, `COURSE_ID`) VALUES ('6', '101', '200');
+INSERT INTO select_course (`id`, `STUDENT_ID`, `COURSE_ID`) VALUES ('7', '101', '202');
+INSERT INTO select_course (`id`, `STUDENT_ID`, `COURSE_ID`) VALUES ('8', '101', '204');
+INSERT INTO select_course (`id`, `STUDENT_ID`, `COURSE_ID`) VALUES ('9', '102', '200');
+INSERT INTO select_course (`id`, `STUDENT_ID`, `COURSE_ID`) VALUES ('10', '102', '203');
+INSERT INTO select_course (`id`, `STUDENT_ID`, `COURSE_ID`) VALUES ('11', '102', '204');
+INSERT INTO select_course (`id`, `STUDENT_ID`, `COURSE_ID`) VALUES ('12', '103', '202');
+INSERT INTO select_course (`id`, `STUDENT_ID`, `COURSE_ID`) VALUES ('13', '103', '203');
+INSERT INTO select_course (`id`, `STUDENT_ID`, `COURSE_ID`) VALUES ('15', '101', '203');
+
+
+-- 查询选了所有课程的学生姓名--
+SELECT
+	NAME
+FROM
+	student s
+WHERE
+	NOT EXISTS (
+		SELECT
+			*
+		FROM
+			course c
+		WHERE
+			NOT EXISTS (
+				SELECT
+					*
+				FROM
+					select_course sc
+				WHERE
+					sc.student_id = s.id
+				AND sc.course_id = c.id
+			)
+	);
+
+-- 查询被所有学生都选了的课程名--
+SELECT
+	c.C_NAME
+FROM
+	course c
+WHERE
+	NOT EXISTS (
+		SELECT
+			*
+		FROM
+			student s
+		WHERE
+			NOT EXISTS (
+				SELECT
+					*
+				FROM
+					select_course sc
+				WHERE
+					sc.student_id = s.id
+				AND sc.course_id = c.id
+			)
+	);
+
+-- 查询至少选择了一门课程的学生姓名--
+SELECT
+	NAME
+FROM
+	student s
+WHERE
+	EXISTS (
+		SELECT
+			*
+		FROM
+			course c
+		WHERE
+			EXISTS (
+				SELECT
+					*
+				FROM
+					select_course sc
+				WHERE
+					sc.student_id = s.id
+				AND sc.course_id = c.id
+			)
+	);
+
+-- 查询一门课程也没选的学生姓名--
+SELECT
+	NAME
+FROM
+	student s
+WHERE
+	NOT EXISTS (
+		SELECT
+			*
+		FROM
+			course c
+		WHERE
+			EXISTS (
+				SELECT
+					*
+				FROM
+					select_course sc
+				WHERE
+					sc.student_id = s.id
+				AND sc.course_id = c.id
+			)
+	);
+
+-- 查询没有选择全部课程的学生姓名（包括一门也没选择的同学）
+SELECT
+	NAME
+FROM
+	student s
+WHERE
+	EXISTS (
+		SELECT
+			*
+		FROM
+			course c
+		WHERE
+			NOT EXISTS (
+				SELECT
+					*
+				FROM
+					select_course sc
+				WHERE
+					sc.student_id = s.id
+				AND sc.course_id = c.id
+			)
+	);
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://liujinhua306.github.io/tag/sql" class="tag">
+                    sql
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://liujinhua306.github.io/post/postgresql-chang-yong-ming-ling">
+                  <h3 class="post-title">
+                    postgresql常用命令
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: 'b31c841058e3c035d9b2',
+        clientSecret: 'f35c94c3fd65770a0f644299d4f3eedcb22ec5a1',
+        repo: 'liujinhua306.github.io',
+        owner: 'liujinhua306',
+        admin: ['liujinhua306'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
