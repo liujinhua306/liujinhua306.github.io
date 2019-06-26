@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://liujinhua306.github.io</id>
     <title>suisuipingan</title>
-    <updated>2019-06-26T03:05:14.655Z</updated>
+    <updated>2019-06-26T03:06:20.124Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://liujinhua306.github.io"/>
     <link rel="self" href="https://liujinhua306.github.io/atom.xml"/>
@@ -10,6 +10,15 @@
     <logo>https://liujinhua306.github.io/images/avatar.png</logo>
     <icon>https://liujinhua306.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, suisuipingan</rights>
+    <entry>
+        <title type="html"><![CDATA[我就是我 ]]></title>
+        <id>https://liujinhua306.github.io/post/about</id>
+        <link href="https://liujinhua306.github.io/post/about">
+        </link>
+        <updated>2019-06-26T03:05:34.000Z</updated>
+        <content type="html"><![CDATA[<p>my name is liujinhua</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[redis批量删除指定key]]></title>
         <id>https://liujinhua306.github.io/post/redis</id>
