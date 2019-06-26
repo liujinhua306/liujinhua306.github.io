@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>SpringBoot Thymeleaf使用教程（实用版） | suisuipingan</title>
+<meta name="description" content="温故而知新">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://liujinhua306.github.io/favicon.ico?v=1561530122554">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://liujinhua306.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://liujinhua306.github.io">
+        <img src="https://liujinhua306.github.io/images/avatar.png?v=1561530122554" class="site-logo">
+        <h1 class="site-title">suisuipingan</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives/" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags/" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+        
+          <a href="/springboot/thymeleaf" class="site-nav">
+            springboot
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://liujinhua306.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">SpringBoot Thymeleaf使用教程（实用版）</h2>
+            <div class="post-date">2019-06-26</div>
+            
+            <div class="post-content">
+              <p>使用Thymeleaf 三大理由：</p>
+<blockquote>
+<ol>
+<li>简洁漂亮 容易理解</li>
+<li>完美支持HTML5 使用浏览器直接打开页面</li>
+<li>不新增标签 只需增强属性</li>
+</ol>
+</blockquote>
+<p><a name="yYdxQ"></a></p>
+<h1 id="学习目标">学习目标</h1>
+<ul>
+<li>快速掌握Thymeleaf的基本使用（五大基础语法+常用内置对象）
+<a name="SFQlm"></a></li>
+</ul>
+<h1 id="快速查阅">快速查阅</h1>
+<p>专题阅读：<a href="https://www.jianshu.com/p/964370d9374e">《SpringBoot 布道系列》</a><br />源码下载：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2Fyizhiwazi%2Fspringboot-socks%2Ftree%2Fmaster%2Fspringboot-web-thymeleaf-enhance">springboot-web-thymeleaf-enhance</a><br />— Hey Man，Don't forget to Star or Fork . —<br />官方指南：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fwww.thymeleaf.org%2Fdoc%2Ftutorials%2F3.0%2Fusingthymeleaf.html"> Thymleaf 3.0 官方教程</a><br />相关教程：<a href="https://www.jianshu.com/p/8dc48fa74e7e">SpringBoot Thymeleaf 基本介绍</a> 、 <a href="https://www.jianshu.com/p/f658fed35786">SpringBoot 在IDEA中实现热部署(实用版)</a>
+<a name="rw1hQ"></a></p>
+<h1 id="使用教程">使用教程</h1>
+<blockquote>
+<p><code>温馨提示：Thymeleaf 最为显著的特征是增强属性，任何属性都可以通过th:xx 来完成交互，例如th:value最终会覆盖value属性。</code></p>
+</blockquote>
+<p><a name="vGqRP"></a></p>
+<h2 id="一-基础语法">一、基础语法</h2>
+<p><a name="pzWqN"></a></p>
+<h3 id="变量表达式">变量表达式  <code>${}</code></h3>
+<p>使用方法：直接使用<code>th:xx = &quot;${}&quot;</code> 获取对象属性 。例如：</p>
+<pre><code class="language-html">&lt;form id=&quot;userForm&quot;&gt;
+    &lt;input id=&quot;id&quot; name=&quot;id&quot; th:value=&quot;${user.id}&quot;/&gt;
+    &lt;input id=&quot;username&quot; name=&quot;username&quot; th:value=&quot;${user.username}&quot;/&gt;
+    &lt;input id=&quot;password&quot; name=&quot;password&quot; th:value=&quot;${user.password}&quot;/&gt;
+&lt;/form&gt;
+&lt;div th:text=&quot;hello&quot;&gt;&lt;/div&gt;
+&lt;div th:text=&quot;${user.username}&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p><a name="QhdlY"></a></p>
+<h3 id="选择变量表达式">选择变量表达式 <code>*{}</code></h3>
+<p>使用方法：首先通过<code>th:object</code> 获取对象，然后使用<code>th:xx = &quot;*{}&quot;</code>获取对象属性。<br />这种简写风格极为清爽，推荐大家在实际项目中使用。 例如：</p>
+<pre><code class="language-html">&lt;form id=&quot;userForm&quot; th:object=&quot;${user}&quot;&gt;
+    &lt;input id=&quot;id&quot; name=&quot;id&quot; th:value=&quot;*{id}&quot;/&gt;
+    &lt;input id=&quot;username&quot; name=&quot;username&quot; th:value=&quot;*{username}&quot;/&gt;
+    &lt;input id=&quot;password&quot; name=&quot;password&quot; th:value=&quot;*{password}&quot;/&gt;
+&lt;/form&gt;
+</code></pre>
+<p><a name="3kVQ0"></a></p>
+<h3 id="链接表达式">链接表达式 <code>@{}</code></h3>
+<p>使用方法：通过链接表达式<code>@{}</code>直接拿到应用路径，然后拼接静态资源路径。例如：</p>
+<pre><code class="language-javascript">&lt;script th:src=&quot;@{/webjars/jquery/jquery.js}&quot;&gt;&lt;/script&gt;
+&lt;link th:href=&quot;@{/webjars/bootstrap/css/bootstrap.css}&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;
+</code></pre>
+<p><a name="242Wc"></a></p>
+<h3 id="片段表达式-~">片段表达式 <code>~{}</code></h3>
+<p>片段表达式是Thymeleaf的特色之一，细粒度可以达到标签级别，这是JSP无法做到的。<br />片段表达式拥有三种语法：</p>
+<ul>
+<li><code>~{ viewName } 表示引入完整页面</code></li>
+<li><code>~{ viewName ::selector} 表示在指定页面寻找片段 其中selector可为片段名、jquery选择器等</code></li>
+<li><code>~{ ::selector} 表示在当前页寻找</code></li>
+</ul>
+<p>使用方法：首先通过<code>th:fragment</code>定制片段 ，然后通过<code>th:replace</code> 填写片段路径和片段名。例如：</p>
+<pre><code class="language-html">&lt;!-- /views/common/head.html--&gt;
+&lt;head th:fragment=&quot;static&quot;&gt;
+        &lt;script th:src=&quot;@{/webjars/jquery/3.3.1/jquery.js}&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;!-- /views/your.html --&gt;
+&lt;div th:replace=&quot;~{common/head::static}&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p>在实际使用中，我们往往使用更简洁的表达，去掉表达式外壳直接填写片段名。例如：</p>
+<pre><code class="language-html">&lt;!-- your.html --&gt;
+&lt;div th:replace=&quot;common/head::static&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p>值得注意的是，使用替换路径<code>th:replace</code> 开头请勿添加斜杠，避免部署运行的时候出现路径报错。（因为默认拼接的路径为<code>spring.thymeleaf.prefix = classpath:/templates/</code>）
+<a name="RPDra"></a></p>
+<h3 id="消息表达式">消息表达式</h3>
+<p>即通常的国际化属性：<code>#{msg}</code>  用于获取国际化语言翻译值。例如：</p>
+<pre><code class="language-html">&lt;title th:text=&quot;#{user.title}&quot;&gt;&lt;/title&gt;
+</code></pre>
+<p><a name="opd9m"></a></p>
+<h3 id="其它表达式">其它表达式</h3>
+<p>在基础语法中，默认支持字符串连接、数学运算、布尔逻辑和三目运算等。例如：</p>
+<pre><code class="language-html">&lt;input name=&quot;name&quot; th:value=&quot;${'I am '+(user.name!=null?user.name:'NoBody')}&quot;/&gt;
+</code></pre>
+<p><a name="wdsjr"></a></p>
+<h2 id="二-内置对象">二、内置对象</h2>
+<blockquote>
+<p>官方文档：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fwww.thymeleaf.org%2Fdoc%2Ftutorials%2F3.0%2Fusingthymeleaf.html%23appendix-a-expression-basic-objects"> 附录A： Thymeleaf 3.0 基础对象</a>
+官方文档：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fwww.thymeleaf.org%2Fdoc%2Ftutorials%2F3.0%2Fusingthymeleaf.html%23appendix-b-expression-utility-objects"> 附录B： Thymeleaf 3.0 工具类 </a></p>
+</blockquote>
+<p><a name="cIFfJ"></a></p>
+<h3 id="七大基础对象">七大基础对象：</h3>
+<ul>
+<li><code>${#ctx}</code> 上下文对象，可用于获取其它内置对象。</li>
+<li><code>${#vars}</code>:    上下文变量。</li>
+<li><code>${#locale}</code>：上下文区域设置。</li>
+<li><code>${#request}</code>: HttpServletRequest对象。</li>
+<li><code>${#response}</code>: HttpServletResponse对象。</li>
+<li><code>${#session}</code>: HttpSession对象。</li>
+<li><code>${#servletContext}</code>:  ServletContext对象。
+<a name="oiqCt"></a></li>
+</ul>
+<h3 id="常用的工具类">常用的工具类：</h3>
+<ul>
+<li><code>#strings</code>：字符串工具类</li>
+<li><code>#lists</code>：List 工具类</li>
+<li><code>#arrays</code>：数组工具类</li>
+<li><code>#sets</code>：Set 工具类</li>
+<li><code>#maps</code>：常用Map方法。</li>
+<li><code>#objects</code>：一般对象类，通常用来判断非空</li>
+<li><code>#bools</code>：常用的布尔方法。</li>
+<li><code>#execInfo</code>：获取页面模板的处理信息。</li>
+<li><code>#messages</code>：在变量表达式中获取外部消息的方法，与使用＃{...}语法获取的方法相同。</li>
+<li><code>#uris</code>：转义部分URL / URI的方法。</li>
+<li><code>#conversions</code>：用于执行已配置的转换服务的方法。</li>
+<li><code>#dates</code>：时间操作和时间格式化等。</li>
+<li><code>#calendars</code>：用于更复杂时间的格式化。</li>
+<li><code>#numbers</code>：格式化数字对象的方法。</li>
+<li><code>#aggregates</code>：在数组或集合上创建聚合的方法。</li>
+<li><code>#ids</code>：处理可能重复的id属性的方法。
+<a name="NJOm0"></a></li>
+</ul>
+<h2 id="三-迭代循环">三、迭代循环</h2>
+<p>想要遍历<code>List</code>集合很简单，配合<code>th:each</code> 即可快速完成迭代。例如遍历用户列表：</p>
+<pre><code class="language-html">&lt;div th:each=&quot;user:${userList}&quot;&gt;
+    账号：&lt;input th:value=&quot;${user.username}&quot;/&gt;
+    密码：&lt;input th:value=&quot;${user.password}&quot;/&gt;
+&lt;/div&gt;
+</code></pre>
+<p>在集合的迭代过程还可以获取状态变量，只需在变量后面指定状态变量名即可，状态变量可用于获取集合的下标/序号、总数、是否为单数/偶数行、是否为第一个/最后一个。例如：</p>
+<pre><code class="language-html">&lt;div th:each=&quot;user,stat:${userList}&quot; th:class=&quot;${stat.even}?'even':'odd'&quot;&gt;
+    下标：&lt;input th:value=&quot;${stat.index}&quot;/&gt;
+    序号：&lt;input th:value=&quot;${stat.count}&quot;/&gt;
+    账号：&lt;input th:value=&quot;${user.username}&quot;/&gt;
+    密码：&lt;input th:value=&quot;${user.password}&quot;/&gt;
+&lt;/div&gt;
+</code></pre>
+<p>如果缺省状态变量名，则迭代器会默认帮我们生成以变量名开头的状态变量 <code>xxStat</code>， 例如：</p>
+<pre><code class="language-html">&lt;div th:each=&quot;user:${userList}&quot; th:class=&quot;${userStat.even}?'even':'odd'&quot;&gt;
+    下标：&lt;input th:value=&quot;${userStat.index}&quot;/&gt;
+    序号：&lt;input th:value=&quot;${userStat.count}&quot;/&gt;
+    账号：&lt;input th:value=&quot;${user.username}&quot;/&gt;
+    密码：&lt;input th:value=&quot;${user.password}&quot;/&gt;
+&lt;/div&gt;
+</code></pre>
+<p><a name="e0zLO"></a></p>
+<h2 id="四-条件判断">四、条件判断</h2>
+<p>条件判断通常用于动态页面的初始化，例如：</p>
+<pre><code class="language-html">&lt;div th:if=&quot;${userList}&quot;&gt;
+    &lt;div&gt;的确存在..&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>如果想取反则使用unless 例如：</p>
+<pre><code class="language-html">&lt;div th:unless=&quot;${userList}&quot;&gt;
+    &lt;div&gt;不存在..&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p><a name="ov0ko"></a></p>
+<h2 id="五-日期格式化">五、日期格式化</h2>
+<p>使用默认的日期格式(toString方法) 并不是我们预期的格式：<code>Mon Dec 03 23:16:50 CST 2018</code></p>
+<pre><code class="language-html">&lt;input type=&quot;text&quot; th:value=&quot;${user.createTime}&quot;/&gt;
+</code></pre>
+<p>此时可以通过时间工具类<code>#dates</code>来对日期进行格式化：<code>2018-12-03 23:16:50</code></p>
+<pre><code class="language-html">&lt;input type=&quot;text&quot; th:value=&quot;${#dates.format(user.createTime,'yyyy-MM-dd HH:mm:ss')}&quot;/&gt;
+</code></pre>
+<p><a name="a37Ga"></a></p>
+<h2 id="六-内联写法">六、内联写法</h2>
+<ul>
+<li>（1）为什么要使用内联写法？·答：因为 JS无法获取服务端返回的变量。<br /></li>
+<li>（2）如何使用内联表达式？答：标准格式为：<code>[[${xx}]]</code> ，可以读取服务端变量，也可以调用内置对象的方法。例如获取用户变量和应用路径：<br /></li>
+</ul>
+<pre><code class="language-html">&lt;script th:inline=&quot;javascript&quot;&gt;
+        var user = [[${user}]];`
+        var APP_PATH = [[${#request.getContextPath()}]];
+        var LANG_COUNTRY = [[${#locale.getLanguage()+'_'+#locale.getCountry()}]];
+    &lt;/script&gt;
+</code></pre>
+<ul>
+<li>（3）标签引入的JS里面能使用内联表达式吗？答：不能！内联表达式仅在页面生效，因为<code>Thymeleaf</code>只负责解析一级视图，不能识别外部标签JS里面的表达式。
+<a name="wLSXW"></a></li>
+</ul>
+<h2 id="七-国际化">七、国际化</h2>
+<blockquote>
+<p>需要了解更多关于国际化的精彩描述请前往 <a href="https://www.jianshu.com/p/e2eae08f3255">SpringBoot 快速实现国际化i18n</a> 。</p>
+</blockquote>
+<p>例如在国际化文件中编写了user.title这个键值，然后使用<code>#{}</code>读取这个KEY即可获取翻译。</p>
+<pre><code class="language-html">&lt;title th:text=&quot;#{user.title}&quot;&gt;用户登陆&lt;/title&gt;
+</code></pre>
+<p><a name="HYbxp"></a></p>
+<h2 id="八-详细教程">八、详细教程</h2>
+<blockquote>
+<p>======== 有了上述基础后 下面正式开始Thymeleaf 的详细教程 ==============</p>
+</blockquote>
+<p>首先通过<a href="https://www.jianshu.com/p/d2b08a671e27">Spring Initializr</a>创建项目，如图所示：<br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1560130930303-18c49d0a-80ad-4b00-99d0-316b4d39a6b1.png#align=left&amp;display=inline&amp;height=704&amp;name=image.png&amp;originHeight=704&amp;originWidth=702&amp;size=202803&amp;status=done&amp;width=702" alt="image.png"><br />然后在POM文件引入<code>web 、thymeleaf</code>等依赖：</p>
+<pre><code class="language-xml">&lt;dependencies&gt;
+        &lt;dependency&gt;&lt;!--Web相关依赖--&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;&lt;!--页面模板依赖--&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;&lt;!--热部署依赖--&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+</code></pre>
+<p>然后在<code>src/main/resources/application.yml</code> 配置页面路径：</p>
+<pre><code>spring:
+  thymeleaf:
+    cache: false #关闭缓存
+    prefix: classpath:/views/ #调整页面路径
+</code></pre>
+<p>接着在<code>src/main/java/com/hehe/web/UserController</code> 获取用户信息:</p>
+<pre><code class="language-java">@RestController
+public class UserController {
+    private List&lt;User&gt; userList = new ArrayList&lt;&gt;();
+    {
+        userList.add(new User(&quot;1&quot;, &quot;socks&quot;, &quot;123456&quot;, new Date()));
+        userList.add(new User(&quot;2&quot;, &quot;admin&quot;, &quot;111111&quot;, new Date()));
+        userList.add(new User(&quot;3&quot;, &quot;jacks&quot;, &quot;222222&quot;, null));
+    }
+    @GetMapping(&quot;/&quot;)
+    public ModelAndView index() {
+        return new ModelAndView(&quot;user/user&quot;, &quot;userList&quot;, userList);
+    }
+}
+public class User {
+    private String id;
+    private String username;
+    private String password;
+    private Date createTime;
+    //请读者自行补充 构造器和 get/set方法..
+}
+</code></pre>
+<p>开始编写公共页面：<code>src/main/resources/views/common/head.html</code> ，其中<code>static</code>为页面片段：</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;!--声明static为页面片段名称--&gt;
+&lt;head th:fragment=&quot;static&quot;&gt;
+    &lt;link th:href=&quot;@{/webjars/bootstrap/css/bootstrap.css}&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;/&gt;
+    &lt;script th:src=&quot;@{/webjars/jquery/jquery.js}&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;/html&gt;
+</code></pre>
+<p>接着编写用户列表页：<code>src/main/resources/views/user/user.html</code> 配合<code>th:each</code>显示用户列表信息。<br />使用说明：这里 <code>th:replace=&quot;common/head::static&quot;</code> 表示将引用<code>${spring.thymeleaf.prefix}/common/head.html</code>的<code>static</code>页面片段，值得注意的是由于替换路径默认会拼接前缀路径，所以开头切勿在添加斜杠，否则在打包成JAR部署运行时将提示报<code>Templates not found...</code> 。</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;/&gt;
+    &lt;title th:text=&quot;用户信息&quot;&gt;User&lt;/title&gt;
+    &lt;!--默认拼接前缀路径,开头请勿再添加斜杠,防止部署运行报错！--&gt;
+    &lt;script th:replace=&quot;common/head::static&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div th:each=&quot;user,userStat:${userList}&quot; th:class=&quot;${userStat.even}?'even':'odd'&quot;&gt;
+    序号：&lt;input type=&quot;text&quot; th:value=&quot;${userStat.count}&quot;/&gt;
+    账号：&lt;input type=&quot;text&quot; th:value=&quot;${user.username}&quot;/&gt;
+    密码：&lt;input type=&quot;password&quot; th:value=&quot;${user.password}&quot;/&gt;
+    时间：&lt;input type=&quot;text&quot; th:value=&quot;${user.createTime}&quot;/&gt;
+    时间：&lt;input type=&quot;text&quot; th:value=&quot;${#dates.format(user.createTime,'yyyy-MM-dd HH:mm:ss')}&quot;/&gt;
+&lt;/div&gt;
+&lt;script th:inline=&quot;javascript&quot;&gt;
+    //通过内联表达式获取用户信息
+    var userList = [[${userList}]];
+    console.log(userList)
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>然后编写单个用户页面：<br />至此大功告成，然后快速启动项目，如图所示：<br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1560131008803-a0bf25c3-4213-4c48-8c47-cd63c5ee7152.png#align=left&amp;display=inline&amp;height=202&amp;name=image.png&amp;originHeight=202&amp;originWidth=1041&amp;size=184694&amp;status=done&amp;width=1041" alt="image.png"><br />快速启动项目<br />然后访问用户列表： <a href="https://links.jianshu.com/go?to=http%3A%2F%2Flocalhost%3A8080">http://localhost:8080</a> ，如图所示：<br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1560131021484-d9a0f46b-e9c2-423a-bfba-1131341b0d8b.png#align=left&amp;display=inline&amp;height=115&amp;name=image.png&amp;originHeight=115&amp;originWidth=1040&amp;size=52156&amp;status=done&amp;width=1040" alt="image.png"><br />然后访问单个用户： <a href="https://links.jianshu.com/go?to=http%3A%2F%2Flocalhost%3A8080%2Fuser%2F1">http://localhost:8080/user/1</a> ，如图所示：<br /><img src="https://cdn.nlark.com/yuque/0/2019/png/196377/1560131035479-1dec870d-ba3a-4aa6-ac47-805cf77fdce9.png#align=left&amp;display=inline&amp;height=452&amp;name=image.png&amp;originHeight=452&amp;originWidth=1017&amp;size=39385&amp;status=done&amp;width=1017" alt="image.png"></p>
+<p>作者：yizhiwazi<br />链接：https://www.jianshu.com/p/908b48b10702<br />来源：简书<br />简书著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。</p>
+
+            </div>
+            
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: 'b31c841058e3c035d9b2',
+        clientSecret: 'f35c94c3fd65770a0f644299d4f3eedcb22ec5a1',
+        repo: 'liujinhua306.github.io',
+        owner: 'liujinhua306',
+        admin: ['liujinhua306'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
