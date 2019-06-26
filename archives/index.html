@@ -1,281 +1,218 @@
+<!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8" />
-<meta name="description" content="" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="robots" content="all,follow">
-<meta name="googlebot" content="index,follow,snippet,archive">
-<title>suisuipingan</title>
-<link rel="shortcut icon" href="https://liujinhua306.github.io/favicon.ico?v=1561532968118">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-<link rel="stylesheet" href="https://liujinhua306.github.io/styles/main.css" type='text/css' media='all'>
+  <head>
+    <meta charset="utf-8" >
 
-<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+<title>文章归档 | suisuipingan</title>
+<meta name="description" content="温故而知新">
 
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://liujinhua306.github.io/favicon.ico?v=1561533370534">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://liujinhua306.github.io/styles/main.css">
 
 
 
-</head>
-    <body class="post-template-default single single-post single-format-standard ct-body singular singular-post not-front standard">
-        <div id="overflow-container" class="overflow-container">
-            <a class="skip-content" href="#main">Skip to content</a>
-                <header id="site-header" class="site-header" role="banner">
-    <div class='top-navigation top-navigation-important'>
-        <div class='container'>
-            <div id="menu-secondary" class="menu-container menu-secondary" role="navigation">
-                <button id="toggle-secondary-navigation" class="toggle-secondary-navigation"><i class="fa fa-plus"></i></button>
-                <div class="menu">
-                    <ul id="menu-secondary-items" class="menu-secondary-items">
-                        
-                        
-                            
-                        <li id="menu-item" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item">
-                            <a href="https://liujinhua306.github.io/tag/muban">模板</a>
-                        </li>
-                            
-                        
-                            
-                        <li id="menu-item" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item">
-                            <a href="https://liujinhua306.github.io/tag/java">java</a>
-                        </li>
-                            
-                        
-                            
-                        <li id="menu-item" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item">
-                            <a href="https://liujinhua306.github.io/tag/sql">sql</a>
-                        </li>
-                            
-                        
-                            
-                        <li id="menu-item" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item">
-                            <a href="https://liujinhua306.github.io/tag/database">数据库</a>
-                        </li>
-                            
-                        
-                    </ul>
-                </div>
-            </div>
-            <ul class="social-media-icons">
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-            </ul>
-        </div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://liujinhua306.github.io">
+        <img src="https://liujinhua306.github.io/images/avatar.png?v=1561533370534" class="site-logo">
+        <h1 class="site-title">suisuipingan</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
     </div>
-
-    <div class="container">
-        <div id="title-info" class="title-info">
-            <div id='site-title' class='site-title'>
-                <a href="https://liujinhua306.github.io">  suisuipingan </a>
-            </div>
-        </div>
-        <button id="toggle-navigation" class="toggle-navigation">
-            <i class="fa fa-bars"></i>
-        </button>
-        <div id="menu-primary-tracks" class="menu-primary-tracks"></div>
-        <div id="menu-primary" class="menu-container menu-primary" role="navigation">
-            <p class="site-description">温故而知新</p>
-            <div class="menu">
-                <ul id="menu-primary-items" class="menu-primary-items">
-                     
-                        
-                            <li id="menu-item" class='menu-item menu-item-type-post_type menu-item-object-page current-menu-item current_page_item'>
-                                <a href="/">首页</a>
-                            </li>
-                        
-                    
-                        
-                            <li id="menu-item" class='menu-item menu-item-type-post_type menu-item-object-page current-menu-item current_page_item'>
-                                <a href="/archives/">归档</a>
-                            </li>
-                        
-                    
-                        
-                            <li id="menu-item" class='menu-item menu-item-type-post_type menu-item-object-page current-menu-item current_page_item'>
-                                <a href="/tags/">标签</a>
-                            </li>
-                        
-                    
-                        
-                            <li id="menu-item" class='menu-item menu-item-type-post_type menu-item-object-page current-menu-item current_page_item'>
-                                <a href="/post/about">关于</a>
-                            </li>
-                        
-                    
-                </ul>
-            </div>
-        </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives/" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags/" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
     </div>
-
-
-</header>
-
-
-                
-
-<div class="main">
-    <div class="main-content">
-        <div id="timeline-container">
-            <div id="timeline">
-                
-                <div class="timeline-item">
-                    <div class="timeline-icon">
-    <!--                    <img src="assets/images/star.svg" alt="2019">-->
-                        <span>2019</span>
-                    </div>
-                    
-                    
-                        <div class="timeline-content">
-                            <h3 class="timeline-title"> freemarker Java 模板引擎 基本语法</h3>
-                            <p>
-                                
-                            </p>
-                            <a href="https://liujinhua306.github.io/post/freemarker" class="btn">review</a>
-                        </div>
-                    
-                    
-                    
-                        <div class="timeline-content">
-                            <h3 class="timeline-title"> SpringBoot Thymeleaf使用教程（实用版）</h3>
-                            <p>
-                                
-                            </p>
-                            <a href="https://liujinhua306.github.io/post/thymeleaf" class="btn">review</a>
-                        </div>
-                    
-                    
-                    
-                        <div class="timeline-content">
-                            <h3 class="timeline-title"> Java桥接模式(bridge)</h3>
-                            <p>
-                                
-                            </p>
-                            <a href="https://liujinhua306.github.io/post/bridge" class="btn">review</a>
-                        </div>
-                    
-                    
-                    
-                        <div class="timeline-content">
-                            <h3 class="timeline-title"> Java通过URLClassLoader让程序支持插件扩展</h3>
-                            <p>
-                                
-                            </p>
-                            <a href="https://liujinhua306.github.io/post/chajian" class="btn">review</a>
-                        </div>
-                    
-                    
-                    
-                        <div class="timeline-content">
-                            <h3 class="timeline-title"> 嵌套练习</h3>
-                            <p>
-                                
-                            </p>
-                            <a href="https://liujinhua306.github.io/post/qian-tao-lian-xi" class="btn">review</a>
-                        </div>
-                    
-                    
-                    
-                        <div class="timeline-content">
-                            <h3 class="timeline-title"> exists练习</h3>
-                            <p>
-                                
-                            </p>
-                            <a href="https://liujinhua306.github.io/post/exists-lian-xi" class="btn">review</a>
-                        </div>
-                    
-                    
-                    
-                        <div class="timeline-content">
-                            <h3 class="timeline-title"> postgresql常用命令</h3>
-                            <p>
-                                
-                            </p>
-                            <a href="https://liujinhua306.github.io/post/postgresql-chang-yong-ming-ling" class="btn">review</a>
-                        </div>
-                    
-                    
-                    
-                        <div class="timeline-content">
-                            <h3 class="timeline-title"> postgresql 脚本语句练习</h3>
-                            <p>
-                                
-                            </p>
-                            <a href="https://liujinhua306.github.io/post/postgresql" class="btn">review</a>
-                        </div>
-                    
-                    
-                </div>
-                 
-            </div>
-        </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://liujinhua306.github.com" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://liujinhua306.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
 </div>
 
-                <nav class="navigation pagination" role="navigation">
-    <h2 class="screen-reader-text">Posts navigation</h2>
-    <div class="nav-links">
-        
-        
-    </div>
-</nav>
 
-                <footer id="site-footer" class="site-footer" role="contentinfo">
-    <h1>
-        <a href="https://liujinhua306.github.io"> suisuipingan </a>
-    </h1>
-    <p class="site-description">温故而知新</p>
-    <div id="menu-footer" class="menu-container menu-footer" role="navigation">
-        <div class="menu">
-            <ul id="menu-footer-items" class="menu-footer-items">
-            </ul>
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          
+
+          <h2 class="archives-title">文章归档</h2>
+          <div class="archives-container">
+            
+              <h2 class="year" data-aos="fade-in" data-aos-delay="500">2019</h2>
+              
+                
+                  <article class="post">
+                    <a href="https://liujinhua306.github.io/post/freemarker">
+                      <h2 class="post-title">
+                        freemarker Java 模板引擎 基本语法
+                      </h2>
+                    </a>
+                  </article>
+                
+              
+                
+                  <article class="post">
+                    <a href="https://liujinhua306.github.io/post/thymeleaf">
+                      <h2 class="post-title">
+                        SpringBoot Thymeleaf使用教程（实用版）
+                      </h2>
+                    </a>
+                  </article>
+                
+              
+                
+                  <article class="post">
+                    <a href="https://liujinhua306.github.io/post/bridge">
+                      <h2 class="post-title">
+                        Java桥接模式(bridge)
+                      </h2>
+                    </a>
+                  </article>
+                
+              
+                
+                  <article class="post">
+                    <a href="https://liujinhua306.github.io/post/chajian">
+                      <h2 class="post-title">
+                        Java通过URLClassLoader让程序支持插件扩展
+                      </h2>
+                    </a>
+                  </article>
+                
+              
+                
+                  <article class="post">
+                    <a href="https://liujinhua306.github.io/post/qian-tao-lian-xi">
+                      <h2 class="post-title">
+                        嵌套练习
+                      </h2>
+                    </a>
+                  </article>
+                
+              
+                
+                  <article class="post">
+                    <a href="https://liujinhua306.github.io/post/exists-lian-xi">
+                      <h2 class="post-title">
+                        exists练习
+                      </h2>
+                    </a>
+                  </article>
+                
+              
+                
+                  <article class="post">
+                    <a href="https://liujinhua306.github.io/post/postgresql-chang-yong-ming-ling">
+                      <h2 class="post-title">
+                        postgresql常用命令
+                      </h2>
+                    </a>
+                  </article>
+                
+              
+                
+                  <article class="post">
+                    <a href="https://liujinhua306.github.io/post/postgresql">
+                      <h2 class="post-title">
+                        postgresql 脚本语句练习
+                      </h2>
+                    </a>
+                  </article>
+                
+              
+            
+          </div>
+
+          <div class="pagination-container">
+  
+  
+</div>
+
         </div>
+      </div>
     </div>
-    <ul class="social-media-icons">
-        
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
-    </ul>
-    <div class="design-credit">
-        <p>Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a></p>
-    </div>
-</footer>
-<script>
-    hljs.initHighlightingOnLoad()
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
 </script>
-<script src="https://liujinhua306.github.io/media/scripts/lib/jquery.min.js"></script>
-<script src="https://liujinhua306.github.io/media/scripts/lib/jquerymigrate.js"></script>
-<script src="https://liujinhua306.github.io/media/scripts/lib/production.min.js"></script>
 
-        </div>
-    </body>
+
+
+
+  </body>
 </html>
