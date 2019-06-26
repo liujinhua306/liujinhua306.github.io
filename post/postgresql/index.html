@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8" >
 
-<title>redis批量删除指定key | suisuipingan</title>
+<title>postgresql 脚本语句练习 | suisuipingan</title>
 <meta name="description" content="温故而知新">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://liujinhua306.github.io/favicon.ico?v=1561518377304">
+<link rel="shortcut icon" href="https://liujinhua306.github.io/favicon.ico?v=1561518665636">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://liujinhua306.github.io/styles/main.css">
 
@@ -36,7 +36,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://liujinhua306.github.io">
-        <img src="https://liujinhua306.github.io/images/avatar.png?v=1561518377304" class="site-logo">
+        <img src="https://liujinhua306.github.io/images/avatar.png?v=1561518665636" class="site-logo">
         <h1 class="site-title">suisuipingan</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -98,23 +98,57 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">redis批量删除指定key</h2>
+            <h2 class="post-title">postgresql 脚本语句练习</h2>
             <div class="post-date">2019-06-26</div>
             
-              <div class="feature-container" style="background-image: url('https://liujinhua306.github.io/post-images/redis.jpg')">
-              </div>
-            
             <div class="post-content">
-              <p>reidis批量删除指定key   123456是redis密码  “RISK_*”表示匹配以RISK_开头的keys</p>
-<p>./redis-cli -a 123456 keys &quot;RISK_*&quot; | xargs ./redis-cli -a 123456 del</p>
+              <pre><code class="language-sql">DO
+$do$
+BEGIN
+IF EXISTS (SELECT 1 FROM orders) THEN
+   DELETE FROM orders;
+ELSE 
+   INSERT INTO orders VALUES (1,2,3);
+END IF;
+END
+$do$
+</code></pre>
+<pre><code class="language-sql">-- 查询t_sys_menu表的id并赋值给menu变量（menu变量是RECORD类型的） 然后for循环 查询t_sys_role_resource表
+-- 中是否有该menuid的记录。没有就插入。 
+DO $body$ DECLARE
+menu RECORD;
+BEGIN
+    FOR menu IN ( SELECT recordid FROM t_sys_menu )
+    LOOP
+  IF
+    ( SELECT COUNT ( 1 ) FROM t_sys_role_resource WHERE roleid = '1' AND menuid = menu.recordid ) = 0 --一定要加括号
+  THEN
+      INSERT INTO &quot;public&quot;.&quot;t_sys_role_resource&quot; ( &quot;recordid&quot;, &quot;roleid&quot;, &quot;menuid&quot;, &quot;buttons&quot; )
+    VALUES
+      ( menu.recordid, '1', menu.recordid, NULL );
+    ELSE 
+    --nothing to do;
+    
+  END IF;
+  
+END LOOP;
+
+END;
+$body$ LANGUAGE PLPGSQL;
+</code></pre>
+<pre><code class="language-sql">-- 查询出menuid后再赋值给menu_id
+DO $body$ DECLARE
+menu_id VARCHAR ( 1000 );
+BEGIN
+    menu_id=(select menuid from t_sys_role_resource where recordid='800005003' );
+    update t_sys_menu set flag=0 where recordid=menu_id;
+END;
+$body$ LANGUAGE PLPGSQL;
+</code></pre>
 
             </div>
             
               <div class="tag-container">
-                
-                  <a href="https://liujinhua306.github.io/tag/zjj" class="tag">
-                    中间件
-                  </a>
                 
                   <a href="https://liujinhua306.github.io/tag/database" class="tag">
                     数据库
