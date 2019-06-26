@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://liujinhua306.github.io</id>
     <title>suisuipingan</title>
-    <updated>2019-06-26T03:34:02.304Z</updated>
+    <updated>2019-06-26T05:48:37.207Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://liujinhua306.github.io"/>
     <link rel="self" href="https://liujinhua306.github.io/atom.xml"/>
@@ -10,6 +10,16 @@
     <logo>https://liujinhua306.github.io/images/avatar.png</logo>
     <icon>https://liujinhua306.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, suisuipingan</rights>
+    <entry>
+        <title type="html"><![CDATA[about me]]></title>
+        <id>https://liujinhua306.github.io/post/about</id>
+        <link href="https://liujinhua306.github.io/post/about">
+        </link>
+        <updated>2019-06-26T05:46:05.000Z</updated>
+        <content type="html"><![CDATA[<!-- 我是摘要 -->
+<p>80后java程序员，现居广州市，就职于蓝盾股份。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Java通过URLClassLoader让程序支持插件扩展]]></title>
         <id>https://liujinhua306.github.io/post/chajian</id>
