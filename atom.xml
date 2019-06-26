@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://liujinhua306.github.io</id>
     <title>Gridea</title>
-    <updated>2019-06-26T02:15:50.780Z</updated>
+    <updated>2019-06-26T02:17:58.011Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://liujinhua306.github.io"/>
     <link rel="self" href="https://liujinhua306.github.io/atom.xml"/>
@@ -10,4 +10,14 @@
     <logo>https://liujinhua306.github.io/images/avatar.png</logo>
     <icon>https://liujinhua306.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[redis批量删除指定key]]></title>
+        <id>https://liujinhua306.github.io/post/redis</id>
+        <link href="https://liujinhua306.github.io/post/redis">
+        </link>
+        <updated>2019-06-26T02:16:51.000Z</updated>
+        <content type="html"><![CDATA[<p>reidis批量删除指定key   123456是redis密码  “RISK_*”表示匹配以RISK_开头的keys</p>
+<p>./redis-cli -a 123456 keys &quot;RISK_*&quot; | xargs ./redis-cli -a 123456 del</p>
+]]></content>
+    </entry>
 </feed>
